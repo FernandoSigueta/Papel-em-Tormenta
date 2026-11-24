@@ -1,0 +1,94 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/*    
+    <!--  ----------  -->
+    <!--    HEADER    -->
+    <!--  ----------  -->
+*/
+
+header {
+    width: 100%;
+    height: 6rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #211A19;
+
+    padding: 1rem 2rem;
+}
+
+.logo_header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.icone_logo {
+    font-size: 40px;
+    color: #C18A43;
+}
+
+.texto_logo h1 {
+    font-family: 'tormenta', serif;
+    font-size: 22px;
+    color: #F0D8AE;
+    margin: 0;
+}
+
+.texto_logo span {
+    font-size: 0.68rem;
+    color: #C9A979;
+}
+
+.navegacao_header {
+    display: flex;
+    align-items: center;
+    gap: 1.87rem;
+}
+
+.navegacao_header a {
+    text-decoration: none;
+    color: #E8D7BF;
+    font-family: 'tormenta', serif;
+    font-size: 0.74rem;
+    transition: 0.3s;
+}
+
+.navegacao_header a:hover {
+    color: #D7A65D;
+}
+
+.navegacao_header .botao_login {
+    background-color: #8F3029;
+    padding: 0.68rem 1.43rem;
+    border-radius: 0.4rem;
+    color: white;
+}
+
+.navegacao_header .botao_login:hover {
+    background-color: #B34437;
+}
+
+/* 
+    <!--  ----------  -->
+    <!--  FIM HEADER  -->
+    <!--  ----------  -->
+*/
+
+@font-face {
+    font-family: "tormenta";
+    src: url(../fonts/Tormenta.ttf) format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
