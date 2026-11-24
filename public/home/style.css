@@ -92,3 +92,23 @@ header {
     font-weight: normal;
     font-style: normal;
 }
+
+.Background_Home {
+    min-height: calc(100svh - 6rem);
+
+    background-image:
+        linear-gradient(to right,
+            rgba(25, 18, 18, 0.95),
+            rgba(25, 18, 18, 0.55),
+            rgba(25, 18, 18, 0.1)),
+        url("../assets/Background_Home.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+
+    padding: 4rem;
+}
