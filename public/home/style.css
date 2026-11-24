@@ -2,9 +2,17 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "tormenta";
+    src: url(../fonts/Tormenta.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     margin: 0;
     padding: 0;
+    font-family: 'tormenta';
 }
 
 /*    
@@ -40,7 +48,7 @@ header {
 }
 
 .texto_logo h1 {
-    font-family: 'tormenta', serif;
+    font-family: 'tormenta';
     font-size: 22px;
     color: #F0D8AE;
     margin: 0;
@@ -60,7 +68,7 @@ header {
 .navegacao_header a {
     text-decoration: none;
     color: #E8D7BF;
-    font-family: 'tormenta', serif;
+    font-family: 'tormenta';
     font-size: 0.74rem;
     transition: 0.3s;
 }
@@ -69,11 +77,51 @@ header {
     color: #D7A65D;
 }
 
-.navegacao_header .botao_login {
+.botao_login {
     background-color: #8F3029;
     padding: 0.68rem 1.43rem;
     border-radius: 0.4rem;
     color: white;
+}
+
+.botao_login_principal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(#B32632, #8F2029);
+
+    border: 0.1rem solid #D7A65D;
+    border-radius: 0.4rem;
+    color: #F0D8AE;
+    font-family: 'tormenta', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+
+    transition: 0.3s ease;
+}
+
+.seta_botao {
+    color: #F2CF8C;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito ao passar o mouse */
+
+.hero-button:hover {
+    background: linear-gradient(
+        145deg,
+        #D13B43,
+        #A92A35
+    );
+
+    border-color: #F2CF8C;
+
+    box-shadow: 0 0 1rem rgba(179, 38, 50, 0.5);
+
+    transform: translateY(-0.2rem);
 }
 
 .navegacao_header .botao_login:hover {
@@ -85,13 +133,6 @@ header {
     <!--  FIM HEADER  -->
     <!--  ----------  -->
 */
-
-@font-face {
-    font-family: "tormenta";
-    src: url(../fonts/Tormenta.ttf) format('ttf');
-    font-weight: normal;
-    font-style: normal;
-}
 
 .Background_Home {
     min-height: calc(100svh - 6rem);
@@ -111,4 +152,13 @@ header {
     align-items: center;
 
     padding: 4rem;
+}
+
+.Background_Home h2 {
+    font-size: 8svh;
+    color: #B32632;
+}
+
+.Background_Home p {
+    color: #D7A65D;
 }
