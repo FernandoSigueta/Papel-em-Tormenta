@@ -134,7 +134,7 @@ header {
     <!--  ----------  -->
 */
 
-.Background_Home {
+.background_home {
     min-height: calc(100svh - 6rem);
 
     background-image:
@@ -154,11 +154,40 @@ header {
     padding: 4rem;
 }
 
-.Background_Home h2 {
+.background_home h1 {
     font-size: 8svh;
     color: #B32632;
 }
 
-.Background_Home p {
+.background_home p {
     color: #D7A65D;
+}
+
+.background_home::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 10rem;
+
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        #211A19
+    );
+}
+
+.informacoes_home {
+    background-color: #211A19;
+
+    padding: 5rem 4rem;
+}
+
+.informacoes_home h2 {
+    font-size: 8svh;
+    color: #B58932;
 }
