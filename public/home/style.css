@@ -88,7 +88,7 @@ header {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    margin-top: 5svh;
     padding: 1rem 2rem;
     background: linear-gradient(#B32632, #8F2029);
 
@@ -99,13 +99,9 @@ header {
     font-size: 1.2rem;
     font-weight: bold;
     text-decoration: none;
+    width: 20svh;
 
     transition: 0.3s ease;
-}
-
-.seta_botao {
-    color: #F2CF8C;
-    transition: transform 0.3s ease;
 }
 
 /* Efeito ao passar o mouse */
@@ -163,6 +159,11 @@ header {
     color: #D7A65D;
 }
 
+.background_home_div {
+    display: flex;
+    flex-direction: column;
+}
+
 .background_home::after {
     content: "";
 
@@ -190,4 +191,38 @@ header {
 .informacoes_home h2 {
     font-size: 8svh;
     color: #B58932;
+}
+
+.informacoes_home h3 {
+    font-size: 2.5svh;
+    color: #B58932;
+}
+
+.div_titulo_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.bloco_info_pai {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cartão_info {
+    display: flex;
+    flex-direction: column;
+}
+
+.bloco_info_titulo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 36svh;
+    min-height: 45svh;
+    background-color: #8F2029;
+}
+
+.bloco_info {
+    color: #D7A65D;
 }
