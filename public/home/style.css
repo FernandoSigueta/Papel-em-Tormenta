@@ -108,20 +108,6 @@ header {
     transition: 0.3s ease;
 }
 
-/* Efeito ao passar o mouse */
-
-.hero-button:hover {
-    background: linear-gradient(145deg,
-            #D13B43,
-            #A92A35);
-
-    border-color: #F2CF8C;
-
-    box-shadow: 0 0 1rem rgba(179, 38, 50, 0.5);
-
-    transform: translateY(-0.2rem);
-}
-
 .navegacao_header .botao_login:hover {
     background-color: #B34437;
 }

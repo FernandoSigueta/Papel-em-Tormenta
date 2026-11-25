@@ -1,0 +1,139 @@
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "tormenta";
+    src: url(../fonts/Tormenta.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'tormenta';
+}
+
+/*    
+    <!--  ----------  -->
+    <!--    HEADER    -->
+    <!--  ----------  -->
+*/
+
+header {
+    width: 100%;
+    height: 6rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #211A19;
+
+    padding: 1rem 2rem;
+}
+
+.logo_header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#logo_header {
+    height: 4.5rem;
+}
+
+.icone_logo {
+    font-size: 40px;
+    color: #C18A43;
+}
+
+.texto_logo h1 {
+    font-family: 'tormenta';
+    font-size: 22px;
+    color: #F0D8AE;
+    margin: 0;
+}
+
+.texto_logo span {
+    font-size: 0.68rem;
+    color: #C9A979;
+}
+
+.navegacao_header {
+    display: flex;
+    align-items: center;
+    gap: 1.87rem;
+}
+
+.navegacao_header a {
+    text-decoration: none;
+    color: #E8D7BF;
+    font-family: 'tormenta';
+    font-size: 0.74rem;
+    transition: 0.3s;
+}
+
+.navegacao_header a:hover {
+    color: #D7A65D;
+}
+
+.botao_login {
+    background-color: #8F3029;
+    padding: 0.68rem 1.43rem;
+    border-radius: 0.4rem;
+    color: white;
+}
+
+.botao_login_principal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5svh;
+    padding: 1rem 2rem;
+    background: linear-gradient(#B32632, #8F2029);
+
+    border: 0.1rem solid #D7A65D;
+    border-radius: 0.4rem;
+    color: #F0D8AE;
+    font-family: 'tormenta', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    width: 20svh;
+
+    transition: 0.3s ease;
+}
+
+.navegacao_header .botao_login:hover {
+    background-color: #B34437;
+}
+
+/* 
+    <!--  ----------  -->
+    <!--  FIM HEADER  -->
+    <!--  ----------  -->
+*/
+
+.background_login {
+min-height: calc(100svh - 6rem);
+
+    background-image:
+        linear-gradient(to right,
+            rgba(25, 18, 18, 0.95),
+            rgba(25, 18, 18, 0.55),
+            rgba(25, 18, 18, 0.1)),
+        url("../assets/textura_de_papel.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+
+    padding: 4rem;
+}
