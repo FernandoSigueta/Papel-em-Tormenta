@@ -11,13 +11,25 @@
 <body>
     <section id="menu">
         <button id="botao_menu" onclick="abrir_menu()">
-            <img src="../assets/menu.svg" style="height: 1rem; width: 1rem;">
+            <img src="../assets/menu-icon.svg" style="height: 2rem; width: 2rem;">
         </button>
 
         <div id="div_menu" class="div_links">
-            <a href="">Home</a>
-            <a href="">Perguntas</a>
-            <a href="">Relatório</a>
+            
+            <div class="div_logo_menu">
+                <div class="icone_logo"><img src="../assets/icone_logo.png" id="logo_menu"></div>
+
+                <div class="texto_logo">
+                    <h1>Fichas em Tormenta </h1>
+                    <span>Estilos de Jogo</span>
+                </div>
+            </div>
+
+            <div class="links_dash">
+                <a href="">Home</a>
+                <a href="">Perguntas</a>
+                <a href="">Relatório</a>
+            </div>
         </div>
     </section>
 </body>
@@ -25,7 +37,7 @@
 <script>
     function abrir_menu() {
         const menu = document.getElementById('div_menu');
-        
+
         if (menu.classList.contains('active')) {
             menu.classList.remove('active');
         } else {
