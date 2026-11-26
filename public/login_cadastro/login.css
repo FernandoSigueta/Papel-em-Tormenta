@@ -9,13 +9,35 @@
     font-style: normal;
 }
 
+:root {
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px)
+}
+
+html {
+    scroll-padding-top: env(safe-area-inset-top, 0px)
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: 'tormenta';
+    font: 1svh 'tormenta';
+    background: #fff;
+    color: #000
 }
 
-/*    
+img {
+    max-width: 100%
+}
+
+[hidden]:not([hidden=until-found i]) {
+    display: none !important
+}
+
+
+/*
     <!--  ----------  -->
     <!--    HEADER    -->
     <!--  ----------  -->
@@ -112,14 +134,14 @@ header {
     background-color: #B34437;
 }
 
-/* 
+/*
     <!--  ----------  -->
     <!--  FIM HEADER  -->
     <!--  ----------  -->
 */
 
 .background_login {
-min-height: calc(100svh - 6rem);
+    min-height: calc(100svh - 6rem);
 
     background-image:
         linear-gradient(to right,
@@ -134,6 +156,231 @@ min-height: calc(100svh - 6rem);
 
     display: flex;
     align-items: center;
-
+    justify-content: center;
     padding: 4rem;
+}
+
+.card_login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #211A19;
+
+    width: 50svh;
+    height: 55svh;
+
+    border-radius: 2%;
+    border: 0.1svh solid #D7A65D;
+}
+
+
+/*
+    ----------------------------------
+    CARD DE LOGIN / CADASTRO
+    ----------------------------------
+*/
+
+/* Classe usada pelo JavaScript para esconder um bloco */
+.oculto {
+    display: none !important;
+}
+
+/* O card */
+.card {
+    width: 100%;
+    max-width: 28rem;
+    background-color: #211A19;
+    border: 0.1rem solid #B8892F;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.55);
+}
+
+/* Faixa vermelha com as duas abas */
+.card__head {
+    background-color: #8F1F2A;
+    border-bottom: 1px solid #E8C27A;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.tab {
+    font-family: 'tormenta';
+    font-size: 0.82rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #D9C3A3;
+    background: none;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    padding: 1.25rem 0.75rem 1rem;
+    cursor: pointer;
+}
+
+.tab:hover {
+    color: #E8C27A;
+}
+
+/* Aba selecionada (classe "ativa" colocada pelo JavaScript) */
+.tab.ativa {
+    color: #E8C27A;
+    border-bottom-color: #E8C27A;
+}
+
+.card__body {
+    padding: 2rem 2rem 1.75rem;
+}
+
+.card__body h2 {
+    font-family: 'tormenta';
+    font-weight: normal;
+    font-size: 1.55rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #B8892F;
+    margin: 0 0 1.5rem;
+}
+
+form {
+    display: grid;
+    gap: 1.1rem;
+}
+
+.field {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.field label {
+    font-family: 'tormenta';
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #E8C27A;
+}
+
+/* Caixa que envolve o campo (serve para posicionar o botão Mostrar) */
+.control {
+    position: relative;
+    display: flex;
+}
+
+.control input {
+    width: 100%;
+    font-family: 'tormenta';
+    font-size: 1.05rem;
+    color: #F1E0C3;
+    background-color: #181111;
+    border: 1px solid #7A5C28;
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.9rem;
+}
+
+.control input::placeholder {
+    color: #8C7A5E;
+}
+
+.control input:hover {
+    border-color: #B8892F;
+}
+
+.control input:focus {
+    outline: none;
+    border-color: #E8C27A;
+}
+
+/* Campo com erro (classe "invalido" colocada pelo JavaScript) */
+.control input.invalido {
+    border-color: #FFB4A8;
+}
+
+/* Campos de senha: espaço à direita para o botão Mostrar */
+.control--pw input {
+    padding-right: 4.6rem;
+}
+
+.reveal {
+    position: absolute;
+    right: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'tormenta';
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #E8C27A;
+    background: none;
+    border: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.reveal:hover {
+    text-decoration: underline;
+}
+
+/* Mensagens de erro (somem sozinhas quando estão vazias) */
+.error {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #FFB4A8;
+}
+
+.error:empty {
+    display: none;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    font-family: 'tormenta';
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    color: #E8C27A;
+    background: linear-gradient(#B0303A, #861D26);
+    border: 1px solid #E8C27A;
+    border-radius: 0.5rem;
+    padding: 1rem 1.4rem;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: linear-gradient(#C03A45, #962730);
+}
+
+.btn--quiet {
+    background: none;
+    border-color: #7A5C28;
+    color: #CDB894;
+}
+
+.btn--quiet:hover {
+    background: none;
+    border-color: #B8892F;
+}
+
+/* Tela de sucesso */
+.welcome {
+    display: grid;
+    gap: 0.9rem;
+    text-align: center;
+}
+
+.welcome h2 {
+    margin: 0;
+}
+
+.welcome .sigil {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto;
+}
+
+.welcome p {
+    margin: 0;
+    color: #CDB894;
 }

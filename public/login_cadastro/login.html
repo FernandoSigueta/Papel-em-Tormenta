@@ -27,10 +27,10 @@
         </div>
 
         <nav class="navegacao_header">
-            <a href="index.html" class="active">Início</a>
+            <a href="../home/index.html" class="active">Início</a>
             <a href="../sobre/sobre.html">Sobre</a>
             <a href="../dash/resultado.html">Resultados</a>
-            <a href="../login_cadastro/login.html" class="botao_login">Login</a>
+            <a href="login.html" class="botao_login">Login</a>
         </nav>
     </header>
 
@@ -39,10 +39,275 @@
     <!--  ----------  -->
 
     <section class="background_login">
+        <section class="card">
+            <div class="card__head" id="card-head">
+                <button class="tab ativa" id="tab-entrar" type="button" onclick="mostrar('entrar')">Entrar</button>
+                <button class="tab" id="tab-cadastro" type="button" onclick="mostrar('cadastro')">Criar conta</button>
+            </div>
 
+            <div class="card__body">
+                <!-- Entrar -->
+                <div id="panel-entrar">
+                    <h2>Bem-vindo de volta</h2>
+                    <form id="form-entrar" novalidate onsubmit="return entrar()">
+                        <div class="field">
+                            <label for="login-email">E-mail</label>
+                            <div class="control">
+                                <input id="login-email" name="email" type="email" autocomplete="email"
+                                    placeholder="aventureiro@taverna.com" oninput="limpar('login-email')">
+                            </div>
+                            <p class="error" id="login-email-err"></p>
+                        </div>
+                        <div class="field">
+                            <label for="login-senha">Senha</label>
+                            <div class="control control--pw">
+                                <input id="login-senha" name="senha" type="password" autocomplete="current-password"
+                                    placeholder="Sua senha" oninput="limpar('login-senha')">
+                                <button class="reveal" id="btn-login-senha" type="button"
+                                    onclick="mostrarSenha('login-senha', 'btn-login-senha')">Mostrar</button>
+                            </div>
+                            <p class="error" id="login-senha-err"></p>
+                        </div>
+                        <p class="error" id="login-geral"></p>
+                        <button class="btn" type="submit">Entrar</button>
+                    </form>
+                </div>
+
+                <!-- Criar conta -->
+                <div id="panel-cadastro" class="oculto">
+                    <h2>Crie sua ficha</h2>
+                    <form id="form-cadastro" novalidate onsubmit="return cadastrar()">
+                        <div class="field">
+                            <label for="cad-nome">Nome de aventureiro</label>
+                            <div class="control">
+                                <input id="cad-nome" name="nome" type="text" autocomplete="nickname"
+                                    placeholder="Ex.: Arton, o Errante" oninput="limpar('cad-nome')">
+                            </div>
+                            <p class="error" id="cad-nome-err"></p>
+                        </div>
+                        <div class="field">
+                            <label for="cad-email">E-mail</label>
+                            <div class="control">
+                                <input id="cad-email" name="email" type="email" autocomplete="email"
+                                    placeholder="aventureiro@taverna.com" oninput="limpar('cad-email')">
+                            </div>
+                            <p class="error" id="cad-email-err"></p>
+                        </div>
+                        <div class="field">
+                            <label for="cad-senha">Senha</label>
+                            <div class="control control--pw">
+                                <input id="cad-senha" name="senha" type="password" autocomplete="new-password"
+                                    placeholder="Mínimo de 8 caracteres" oninput="limpar('cad-senha')">
+                                <button class="reveal" id="btn-cad-senha" type="button"
+                                    onclick="mostrarSenha('cad-senha', 'btn-cad-senha')">Mostrar</button>
+                            </div>
+                            <p class="error" id="cad-senha-err"></p>
+                        </div>
+                        <div class="field">
+                            <label for="cad-confirma">Confirmar senha</label>
+                            <div class="control control--pw">
+                                <input id="cad-confirma" name="confirma" type="password" autocomplete="new-password"
+                                    placeholder="Repita a senha" oninput="limpar('cad-confirma')">
+                                <button class="reveal" id="btn-cad-confirma" type="button"
+                                    onclick="mostrarSenha('cad-confirma', 'btn-cad-confirma')">Mostrar</button>
+                            </div>
+                            <p class="error" id="cad-confirma-err"></p>
+                        </div>
+                        <button class="btn" type="submit">Criar conta</button>
+                    </form>
+                </div>
+
+                <!-- Sucesso -->
+                <div id="panel-ok" class="welcome oculto">
+                    <svg class="sigil" viewBox="0 0 64 64" aria-hidden="true">
+                        <polygon points="32,2 38,22 58,32 38,42 32,62 26,42 6,32 26,22" fill="#2b1f1a" stroke="#b8892f"
+                            stroke-width="2" stroke-linejoin="round" />
+                        <path d="M14 32 Q32 17 50 32 Q32 47 14 32 Z" fill="#161111" stroke="#e8c27a" stroke-width="2" />
+                        <circle cx="32" cy="32" r="7.5" fill="#8f1f2a" stroke="#e8c27a" stroke-width="1.5" />
+                    </svg>
+                    <h2 id="ok-title"></h2>
+                    <p id="ok-text"></p>
+                    <a class="btn" href="#">Começar o quiz</a>
+                    <button class="btn btn--quiet" type="button" onclick="sair()">Sair</button>
+                </div>
+            </div>
+        </section>
     </section>
 
 
 </body>
+
+<script>
+    // ------------------------------------------------------------
+    // Troca entre as abas "Entrar" e "Criar conta"
+    // ------------------------------------------------------------
+    function mostrar(qual) {
+        document.getElementById("panel-ok").classList.add("oculto");
+        document.getElementById("card-head").classList.remove("oculto");
+
+        if (qual === "entrar") {
+            document.getElementById("panel-entrar").classList.remove("oculto");
+            document.getElementById("panel-cadastro").classList.add("oculto");
+            document.getElementById("tab-entrar").classList.add("ativa");
+            document.getElementById("tab-cadastro").classList.remove("ativa");
+        } else {
+            document.getElementById("panel-cadastro").classList.remove("oculto");
+            document.getElementById("panel-entrar").classList.add("oculto");
+            document.getElementById("tab-cadastro").classList.add("ativa");
+            document.getElementById("tab-entrar").classList.remove("ativa");
+        }
+    }
+
+    // ------------------------------------------------------------
+    // Botão Mostrar / Ocultar senha
+    // ------------------------------------------------------------
+    function mostrarSenha(idCampo, idBotao) {
+        var campo = document.getElementById(idCampo);
+        var botao = document.getElementById(idBotao);
+
+        if (campo.type === "password") {
+            campo.type = "text";
+            botao.textContent = "Ocultar";
+        } else {
+            campo.type = "password";
+            botao.textContent = "Mostrar";
+        }
+    }
+
+    // ------------------------------------------------------------
+    // Erros: escreve a mensagem embaixo do campo e pinta a borda.
+    // Devolve true se não há erro e false se há.
+    // ------------------------------------------------------------
+    function erro(idCampo, mensagem) {
+        var campo = document.getElementById(idCampo);
+        var texto = document.getElementById(idCampo + "-err");
+
+        texto.textContent = mensagem;
+
+        if (mensagem === "") {
+            campo.classList.remove("invalido");
+            return true;
+        } else {
+            campo.classList.add("invalido");
+            return false;
+        }
+    }
+
+    // Apaga o erro de um campo quando a pessoa volta a digitar
+    function limpar(idCampo) {
+        erro(idCampo, "");
+        document.getElementById("login-geral").textContent = "";
+    }
+
+    // Confere se o e-mail tem "@" e um "." e não tem espaços
+    function emailValido(email) {
+        return email.includes("@") && email.includes(".") && !email.includes(" ");
+    }
+
+    // ------------------------------------------------------------
+    // Tela de sucesso
+    // ------------------------------------------------------------
+    function sucesso(nome, texto) {
+        document.getElementById("panel-entrar").classList.add("oculto");
+        document.getElementById("panel-cadastro").classList.add("oculto");
+        document.getElementById("card-head").classList.add("oculto");
+
+        document.getElementById("ok-title").textContent = "Olá, " + nome;
+        document.getElementById("ok-text").textContent = texto;
+        document.getElementById("panel-ok").classList.remove("oculto");
+    }
+
+    // ------------------------------------------------------------
+    // Enviar o formulário de login
+    // ------------------------------------------------------------
+    function entrar() {
+        var email = document.getElementById("login-email").value.trim();
+        var senha = document.getElementById("login-senha").value;
+        var mensagemEmail = "";
+        var mensagemSenha = "";
+
+        if (email === "") {
+            mensagemEmail = "Digite seu e-mail.";
+        } else if (!emailValido(email)) {
+            mensagemEmail = "Esse e-mail não parece válido.";
+        }
+
+        if (senha === "") {
+            mensagemSenha = "Digite sua senha.";
+        }
+
+        var emailOk = erro("login-email", mensagemEmail);
+        var senhaOk = erro("login-senha", mensagemSenha);
+
+        if (emailOk && senhaOk) {
+            sucesso(email.split("@")[0], "Sua ficha está pronta. Retome o quiz ou veja seus resultados.");
+        } else {
+            document.getElementById("login-geral").textContent = "Confira os campos acima.";
+        }
+
+        return false; // impede a página de recarregar
+    }
+
+    // ------------------------------------------------------------
+    // Enviar o formulário de cadastro
+    // ------------------------------------------------------------
+    function cadastrar() {
+        var nome = document.getElementById("cad-nome").value.trim();
+        var email = document.getElementById("cad-email").value.trim();
+        var senha = document.getElementById("cad-senha").value;
+        var confirma = document.getElementById("cad-confirma").value;
+        var mensagemNome = "";
+        var mensagemEmail = "";
+        var mensagemSenha = "";
+        var mensagemConfirma = "";
+
+        if (nome.length < 3) {
+            mensagemNome = "Use pelo menos 3 caracteres.";
+        }
+
+        if (email === "") {
+            mensagemEmail = "Digite seu e-mail.";
+        } else if (!emailValido(email)) {
+            mensagemEmail = "Esse e-mail não parece válido.";
+        }
+
+        if (senha.length < 8) {
+            mensagemSenha = "A senha precisa ter pelo menos 8 caracteres.";
+        }
+
+        if (confirma === "" || confirma !== senha) {
+            mensagemConfirma = "As senhas não são iguais.";
+        }
+
+        var nomeOk = erro("cad-nome", mensagemNome);
+        var emailOk = erro("cad-email", mensagemEmail);
+        var senhaOk = erro("cad-senha", mensagemSenha);
+        var confirmaOk = erro("cad-confirma", mensagemConfirma);
+
+        if (nomeOk && emailOk && senhaOk && confirmaOk) {
+            sucesso(nome, "Sua conta foi criada. Faça o quiz para descobrir seu arquétipo de jogador.");
+        }
+
+        return false; // impede a página de recarregar
+    }
+
+    // ------------------------------------------------------------
+    // Botão Sair da tela de sucesso: limpa tudo e volta ao login
+    // ------------------------------------------------------------
+    function sair() {
+        document.getElementById("form-entrar").reset();
+        document.getElementById("form-cadastro").reset();
+
+        // volta as senhas para o modo escondido
+        document.getElementById("login-senha").type = "password";
+        document.getElementById("cad-senha").type = "password";
+        document.getElementById("cad-confirma").type = "password";
+        document.getElementById("btn-login-senha").textContent = "Mostrar";
+        document.getElementById("btn-cad-senha").textContent = "Mostrar";
+        document.getElementById("btn-cad-confirma").textContent = "Mostrar";
+
+        mostrar("entrar");
+    }
+</script>
 
 </html>
