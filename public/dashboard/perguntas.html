@@ -27,27 +27,84 @@
 
             <div class="links_dash">
                 <a href="home_dash.html">
-                    <img src="../assets/dashboard/icone_home_ativo.svg" class="icone_menu"> Recepção
+                    <img src="../assets/dashboard/icone_home.svg" class="icone_menu"> Recepção
                 </a>
                 <a href="perguntas.html" class="pagina_atual">
-                    <img src="../assets/dashboard/icone_perguntas.svg" class="icone_menu"> Perguntas
+                    <img src="../assets/dashboard/icone_perguntas_ativo.svg" class="icone_menu"> Perguntas
                 </a>
                 <a href="relatorio.html">
                     <img src="../assets/dashboard/icone_relatorio.svg" class="icone_menu"> Relatório
                 </a>
+                <div class="div_botao_sair links_dash">
+                    <a href="../home/index.html"> Sair </a>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <section class="background_perguntas">
+        <div class="container_perguntas">
+            
+            <!-- Cabeçalho -->
+            <div class="cabecalho_superior">
+                <h1>Perguntas</h1>
+                <span class="contador_afirmacao">Afirmação 3 de 10</span>
+            </div>
+
+            <!-- Card Principal da Pergunta -->
+            <div class="card_pergunta">
+                <p class="texto_afirmacao">
+                    Prefiro seguir um plano detalhado<br>
+                    a improvisar durante a sessão.
+                </p>
+
+                <div class="opcoes_container">
+                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                        <h2>1</h2>
+                        <p>Discordo totalmente</p>
+                    </button>
+
+                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                        <h2>2</h2>
+                        <p>Discordo</p>
+                    </button>
+
+                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                        <h2>3</h2>
+                        <p>Neutro</p>
+                    </button>
+
+                    <button type="button" class="opcao_resposta selecionada" onclick="selecionarOpcao(this)">
+                        <h2>4</h2>
+                        <p>Concordo</p>
+                    </button>
+
+                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                        <h2>5</h2>
+                        <p>Concordo totalmente</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Rodapé com Botões e Aviso -->
+            <div class="rodape_perguntas">
+                <button type="button" class="botao_voltar">voltar</button>
+                <button type="button" class="botao_proxima">próxima</button>
+            </div>
+
         </div>
     </section>
 
     <script>
         function abrir_menu() {
             const menu = document.getElementById('div_menu');
+            menu.classList.toggle('active');
+        }
 
-            if (menu.classList.contains('active')) {
-                menu.classList.remove('active');
-            } else {
-                menu.classList.add('active');
-            }
+        function selecionarOpcao(elemento) {
+            const opcoes = document.querySelectorAll('.opcao_resposta');
+            opcoes.forEach(opcao => opcao.classList.remove('selecionada'));
+            elemento.classList.add('selecionada');
         }
     </script>
 
