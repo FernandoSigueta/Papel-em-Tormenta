@@ -151,21 +151,18 @@ body {
 
 /* INICIO HOME DASH */
 
-/* Área da recepção (ao lado do menu) */
 .recepcao_usuario {
     flex: 1;
     box-sizing: border-box;
     background-color: #211A19;
     color: #F0D8AE;
-
-    padding: 3.281rem 3.75rem;
+    padding-left: 12rem;
+    padding-top: 3rem;
 
     display: flex;
     flex-direction: column;
-    gap: 2.109rem;
 }
 
-/* Título e texto de boas-vindas */
 .recepcao_titulo {
     display: flex;
     flex-direction: column;
@@ -174,77 +171,37 @@ body {
 
 .recepcao_titulo h1 {
     margin: 0;
-    font-size: 2.578rem;
-    font-weight: normal;
-    letter-spacing: 0.077rem;
+    font-size: 2rem;
     text-transform: uppercase;
     color: #D2404B;
 }
 
 .recepcao_titulo p {
     margin: 0;
-    max-width: 42.656rem;
-    font-size: 1.219rem;
+    max-width: 42rem;
+    font-size: 1rem;
     line-height: 1.5;
     color: #D7A65D;
 }
 
-/* Linha com os dois painéis (quebra para baixo se faltar espaço) */
 .recepcao_paineis {
     display: flex;
-    flex-wrap: wrap;
     align-items: stretch;
-    gap: 1.641rem;
 }
 
-/* Painel "Como funciona" */
 .recepcao_passos {
-    flex: 1.4 1 30rem;
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 
-    padding: 1.875rem;
+    padding: 2rem;
     background-color: #2A2120;
     border: 1px solid rgba(215, 166, 93, 0.45);
-    border-radius: 0.844rem;
+    border-radius: 0.8rem;
 }
 
-/* Painel "Antes de começar" (vinho, igual aos cartões da home) */
-.recepcao_antes {
-    flex: 1 1 18.75rem;
-    box-sizing: border-box;
-
-    display: flex;
-    flex-direction: column;
-    gap: 1.313rem;
-
-    padding: 1.875rem;
-    background-color: #8F2029;
-    border: 0.094rem solid #D7A65D;
-    border-radius: 0.844rem;
-}
-
-.recepcao_passos h2,
-.recepcao_antes h2 {
-    margin: 0;
-    font-size: 1.406rem;
-    font-weight: normal;
-    letter-spacing: 0.056rem;
-    text-transform: uppercase;
-}
-
-.recepcao_passos h2 {
-    color: #D7A65D;
-}
-
-.recepcao_antes h2 {
-    color: #F0D8AE;
-}
-
-/* Cada passo: bolinha com o número + texto */
 .passo {
     display: flex;
     align-items: flex-start;
@@ -252,7 +209,7 @@ body {
 }
 
 .passo_numero {
-    font-size: 1.172rem;
+    font-size: 1rem;
     width: 2.578rem;
     height: 2.578rem;
     flex-shrink: 0;
@@ -269,7 +226,7 @@ body {
 
 .passo h3 {
     margin: 0 0 0.236rem;
-    font-size: 0.984rem;
+    font-size: 0.9rem;
     font-weight: normal;
     letter-spacing: 0.039rem;
     text-transform: uppercase;
@@ -278,12 +235,11 @@ body {
 
 .passo p {
     margin: 0;
-    font-size: 1.031rem;
+    font-size: .9rem;
     line-height: 1.45;
     color: #C9A979;
 }
 
-/* Números-chave: número grande + legenda */
 .fato {
     display: flex;
     align-items: baseline;
@@ -302,7 +258,6 @@ body {
     color: #F0D8AE;
 }
 
-/* Botão + situação do teste */
 .recepcao_acao {
     display: flex;
     flex-wrap: wrap;

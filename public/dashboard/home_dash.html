@@ -43,22 +43,19 @@
         </div>
     </section>
 
-<section class="recepcao_usuario">
-
-        <!-- Título e boas-vindas -->
-        <div class="recepcao_titulo">
-            <h1>Bem-vindo, <span id="nome_usuario">Trov</span></h1>
-            <p>
-                Aqui você descobre seu estilo de jogo e consulta seus resultados quando quiser.
-                A dashboard tem três áreas, todas no menu ao lado.
-            </p>
-        </div>
-
-        <!-- Dois painéis: como funciona / antes de começar -->
+    <section class="recepcao_usuario">
         <div class="recepcao_paineis">
-
             <div class="recepcao_passos">
-                <h2>Como funciona</h2>
+                <div class="recepcao_titulo">
+                    <h1>Bem-vindo, <span id="nome_usuario"></span></h1>
+                    <p>
+                        Esta página é o ambiente inicial, para descobrir seu estilo de jogo ou acessar 
+                        seu relatório de resultados após as perguntas!
+                        <br> <br>
+                        Caso queira navegar livremente, acesse o menu no canto superior esquerdo.
+                    </p>
+                </div>
+                <h2>Passo a Passo</h2>
 
                 <div class="passo">
                     <div class="passo_numero">1</div>
@@ -72,7 +69,7 @@
                     <div class="passo_numero">2</div>
                     <div>
                         <h3>Grave suas respostas</h3>
-                        <p>Elas ficam salvas na sua conta. Uma nova gravação substitui a anterior.</p>
+                        <p>Quando terminar o questionário, aperte para gravar suas respostas para salvá-las.</p>
                     </div>
                 </div>
 
@@ -80,37 +77,15 @@
                     <div class="passo_numero">3</div>
                     <div>
                         <h3>Consulte o relatório</h3>
-                        <p>Veja seu arquétipo, o gráfico de radar, os indicadores e os detalhes do seu estilo de jogo.</p>
+                        <p>Veja seu arquétipo, o gráfico de radar, os indicadores e os detalhes do seu estilo de jogo.
+                        </p>
                     </div>
                 </div>
-            </div>
-
-            <div class="recepcao_antes">
-                <h2>Antes de começar</h2>
-
-                <div class="fato">
-                    <span class="fato_numero">10</span>
-                    <span class="fato_texto">afirmações para responder</span>
-                </div>
-
-                <div class="fato">
-                    <span class="fato_numero">1–5</span>
-                    <span class="fato_texto">escala de concordância</span>
-                </div>
-
-                <div class="fato">
-                    <span class="fato_numero">1</span>
-                    <span class="fato_texto">versão salva por vez: sempre a última</span>
+                <div class="recepcao_acao">
+                    <a href="perguntas.html" class="botao_comecar">Começar as perguntas</a>
                 </div>
             </div>
         </div>
-
-        <!-- Botão e situação do teste -->
-        <div class="recepcao_acao">
-            <a href="perguntas.html" class="botao_comecar">Começar as perguntas</a>
-            <p id="situacao_teste">Situação do teste: nenhuma resposta gravada ainda.</p>
-        </div>
-
     </section>
 
     <script>
