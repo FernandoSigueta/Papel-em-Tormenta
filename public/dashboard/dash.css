@@ -425,52 +425,20 @@ body {
     gap: 1rem;
 }
 
-.botao_voltar {
-    min-height: 2.8rem;
-    padding: 0 1.6rem;
-    background-color: #2A2120;
-    border: 1px solid rgba(215, 166, 93, 0.45);
-    border-radius: 0.4rem;
-    cursor: pointer;
-
-    color: #F0D8AE;
-    font-family: 'tormenta';
-    font-size: 0.85rem;
-    letter-spacing: 0.05rem;
-    text-transform: uppercase;
-    transition: 0.25s ease;
-}
-
-.botao_voltar:hover {
-    border-color: #D7A65D;
-    background-color: #332827;
-}
-
-.botao_proxima {
-    min-height: 2.8rem;
-    padding: 0 1.8rem;
-    background: linear-gradient(#B32632, #8F2029);
-    border: 1px solid #D7A65D;
-    border-radius: 0.4rem;
-    cursor: pointer;
-
-    color: #F0D8AE;
-    font-family: 'tormenta';
-    font-size: 0.85rem;
-    letter-spacing: 0.05rem;
-    text-transform: uppercase;
-    transition: 0.25s ease;
-}
-
-.botao_proxima:hover {
-    background: linear-gradient(#C03A45, #962730);
-}
-
 .aviso_teste {
     margin: 0 0 0 0.5rem;
     font-family: 'tormenta', serif;
     font-size: 0.85rem;
     color: #C9A979;
+}
+
+.erro_pergunta {
+    margin: 0;
+    color: #F0A0A0;
+}
+
+.erro_pergunta:empty {
+    display: none;
 }
 /* FIM PERGUNTAS DASH */
 
@@ -575,6 +543,17 @@ body {
     font-family: Georgia, serif;
     font-size: 0.75rem;
     color: #C9A979;
+}
+
+.aviso_relatorio {
+    margin: 0;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    color: #E8C27A;
+}
+
+.aviso_relatorio:empty {
+    display: none;
 }
 
 /* 2. Grid de KPIs */

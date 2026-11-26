@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="dash.css">
     <!-- Importação do Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="perguntas_dados.js"></script>
 </head>
 
 <body>
@@ -56,35 +57,36 @@
 
                 <div class="acao_refazer">
                     <a href="perguntas.html" class="botao_refazer">Refazer<br>Teste</a>
-                    <span class="aviso_refazer">Ao gravar um novo teste, este relatório é substituído.</span>
+                    <span class="aviso_refazer">Ao responder à última afirmação, este relatório é substituído.</span>
                 </div>
             </div>
 
             <div class="grid_kpis">
                 <div class="card_kpi">
-                    <span class="kpi_label">Arquétipo</span>
-                    <h2 class="kpi_valor" id="kpi_arquetipo">O ESTRATEGISTA</h2>
-                    <span class="kpi_subtexto">Seu perfil principal</span>
+                    <span class="kpi_label">Estilo predominante</span>
+                    <h2 class="kpi_valor" id="kpi_arquetipo">—</h2>
+                    <span class="kpi_subtexto">eixo com maior afinidade</span>
                 </div>
 
                 <div class="card_kpi">
                     <span class="kpi_label">Eixo mais forte</span>
-                    <h2 class="kpi_valor" id="kpi_eixo_forte">MECÂNICA</h2>
-                    <span class="kpi_subtexto" id="kpi_nota_forte">4.60 de 5</span>
+                    <h2 class="kpi_valor" id="kpi_eixo_forte">—</h2>
+                    <span class="kpi_subtexto" id="kpi_nota_forte">—</span>
                 </div>
 
                 <div class="card_kpi">
                     <span class="kpi_label">Eixo mais fraco</span>
-                    <h2 class="kpi_valor" id="kpi_eixo_fraco">COLABORAÇÃO</h2>
-                    <span class="kpi_subtexto" id="kpi_nota_fraco">2.20 de 5</span>
+                    <h2 class="kpi_valor" id="kpi_eixo_fraco">—</h2>
+                    <span class="kpi_subtexto" id="kpi_nota_fraco">—</span>
                 </div>
 
                 <div class="card_kpi">
                     <span class="kpi_label">Média geral</span>
-                    <h2 class="kpi_valor" id="kpi_media_geral">3.36</h2>
-                    <span class="kpi_subtexto">entre os 8 eixos do radar</span>
+                    <h2 class="kpi_valor" id="kpi_media_geral">—</h2>
+                    <span class="kpi_subtexto">média dos 8 eixos do radar</span>
                 </div>
             </div>
+            <p class="aviso_relatorio" id="aviso_relatorio" role="status"></p>
 
             <div class="grid_graficos">
                 <div class="card_grafico">
@@ -92,7 +94,7 @@
                     <div class="wrapper_canvas_radar">
                         <canvas id="graficoRadar"></canvas>
                     </div>
-                    <p class="legenda_radar">Notas de 1 (centro) a 5 (borda externa).</p>
+                    <p class="legenda_radar">Média das 3 respostas por eixo, de 1 (centro) a 5 (borda externa).</p>
                 </div>
 
                 <div class="card_grafico">
@@ -128,25 +130,28 @@
             }
         }
 
+        const eixosPrincipais = [
+            'Mecânica',
+            'Estratégia',
+            'Combate',
+            'Exploração',
+            'Narrativa',
+            'Interpretação',
+            'Social',
+            'Colaboração'
+        ];
+        const eixosComplementares = ['Improviso', 'Competitividade'];
+        const eixos = [...eixosPrincipais, ...eixosComplementares];
+
         const contextoRadar = document.getElementById('graficoRadar').getContext('2d');
 
         const graficoRadar = new Chart(contextoRadar, {
             type: 'radar',
             data: {
-                labels: [
-                    'Mecânica',
-                    'Estratégia',
-                    'Combate',
-                    'Exploração',
-                    'Narrativa',
-                    'Interpretação',
-                    'Social',
-                    'Colaboração'
-                ],
+                labels: eixosPrincipais,
                 datasets: [{
                     label: 'Pontuação',
-                    // Valores de exemplo (substitua pelos dados vindos do backend)
-                    data: [4.60, 4.20, 3.80, 3.40, 3.10, 3.00, 2.50, 2.20],
+                    data: eixosPrincipais.map(() => null),
                     backgroundColor: 'rgba(158, 35, 46, 0.55)', // Preenchimento vermelho translúcido
                     borderColor: '#E8C27A',                     // Linha de contorno dourada
                     borderWidth: 2,
@@ -209,6 +214,9 @@
                 ctx.font = '12px Georgia, serif';
 
                 meta.data.forEach((barra, index) => {
+                    if (!Number.isFinite(valores[index])) {
+                        return;
+                    }
                     const yTexto = barra.y - 9; // Posiciona o texto logo acima da barra
 
                     // Nome do eixo à esquerda
@@ -260,7 +268,9 @@
                             borderColor: '#D7A65D',
                             borderWidth: 1,
                             callbacks: {
-                                label: (context) => ` Nota: ${context.raw.toFixed(2).replace('.', ',')}`
+                                label: (context) => Number.isFinite(context.raw)
+                                    ? ` Nota: ${context.raw.toFixed(2).replace('.', ',')}`
+                                    : ''
                             }
                         }
                     },
@@ -283,8 +293,8 @@
         const graficoEixosPrincipais = new Chart(
             ctxEixosPrincipais,
             criarConfiguracaoBarras(
-                ['Mecânica', 'Estratégia', 'Combate', 'Exploração', 'Narrativa', 'Interpretação', 'Social', 'Colaboração'],
-                [4.60, 4.20, 3.80, 3.40, 3.10, 3.00, 2.50, 2.20],
+                eixosPrincipais,
+                eixosPrincipais.map(() => null),
                 '#E8C27A'
             )
         );
@@ -293,11 +303,90 @@
         const graficoEixosComplementares = new Chart(
             ctxEixosComplementares,
             criarConfiguracaoBarras(
-                ['Improviso', 'Competitividade'],
-                [2.90, 3.70],
+                eixosComplementares,
+                eixosComplementares.map(() => null),
                 '#E06C84'
             )
         );
+
+        function carregarRelatorio() {
+            const aviso = document.getElementById('aviso_relatorio');
+            let resultadoSalvo;
+            try {
+                resultadoSalvo = localStorage.getItem('resultadoPerguntas');
+            } catch (erro) {
+                console.error('Não foi possível acessar as respostas salvas.', erro);
+                aviso.textContent = 'O navegador não permitiu acessar as respostas salvas.';
+                return;
+            }
+
+            if (!resultadoSalvo) {
+                aviso.textContent = 'Responda ao questionário para visualizar seu relatório.';
+                return;
+            }
+
+            let respostasSalvas;
+            try {
+                respostasSalvas = JSON.parse(resultadoSalvo);
+            } catch (erro) {
+                console.error('As respostas salvas não puderam ser lidas.', erro);
+                aviso.textContent = 'Não foi possível carregar as respostas. Refaça o questionário para atualizar o relatório.';
+                return;
+            }
+
+            const respostasValidas = Array.isArray(respostasSalvas)
+                && respostasSalvas.length === Perguntas.length
+                && respostasSalvas.every((resposta, index) =>
+                    resposta
+                    && resposta.pergunta_id === index + 1
+                    && resposta.eixo === Perguntas[index].eixo
+                    && resposta.invertida === Perguntas[index].invertida
+                    && Number.isInteger(resposta.valor)
+                    && resposta.valor >= 1
+                    && resposta.valor <= 5
+                );
+
+            if (!respostasValidas) {
+                aviso.textContent = 'As respostas salvas são incompatíveis com este questionário. Refaça o teste para atualizar o relatório.';
+                return;
+            }
+
+            const notasPorEixo = Object.fromEntries(eixos.map((eixo) => [eixo, []]));
+            Perguntas.forEach((pergunta, index) => {
+                const valor = respostasSalvas[index].valor;
+                notasPorEixo[pergunta.eixo].push(pergunta.invertida ? 6 - valor : valor);
+            });
+
+            const medias = {};
+            for (const eixo of eixos) {
+                if (notasPorEixo[eixo].length !== PERGUNTAS_POR_EIXO) {
+                    aviso.textContent = 'A distribuição das perguntas está incompleta. Não foi possível calcular o relatório.';
+                    return;
+                }
+                medias[eixo] = notasPorEixo[eixo].reduce((soma, nota) => soma + nota, 0) / PERGUNTAS_POR_EIXO;
+            }
+
+            const eixoForte = eixos.reduce((melhor, eixo) => medias[eixo] > medias[melhor] ? eixo : melhor);
+            const eixoFraco = eixos.reduce((menor, eixo) => medias[eixo] < medias[menor] ? eixo : menor);
+            const mediaGeral = eixosPrincipais.reduce((soma, eixo) => soma + medias[eixo], 0) / eixosPrincipais.length;
+            const formatarNota = (nota) => nota.toFixed(2).replace('.', ',');
+
+            document.getElementById('kpi_arquetipo').textContent = eixoForte.toUpperCase();
+            document.getElementById('kpi_eixo_forte').textContent = eixoForte.toUpperCase();
+            document.getElementById('kpi_nota_forte').textContent = `${formatarNota(medias[eixoForte])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
+            document.getElementById('kpi_eixo_fraco').textContent = eixoFraco.toUpperCase();
+            document.getElementById('kpi_nota_fraco').textContent = `${formatarNota(medias[eixoFraco])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
+            document.getElementById('kpi_media_geral').textContent = formatarNota(mediaGeral);
+
+            graficoRadar.data.datasets[0].data = eixosPrincipais.map((eixo) => medias[eixo]);
+            graficoRadar.update();
+            graficoEixosPrincipais.data.datasets[0].data = eixosPrincipais.map((eixo) => medias[eixo]);
+            graficoEixosPrincipais.update();
+            graficoEixosComplementares.data.datasets[0].data = eixosComplementares.map((eixo) => medias[eixo]);
+            graficoEixosComplementares.update();
+        }
+
+        carregarRelatorio();
     </script>
 </body>
 

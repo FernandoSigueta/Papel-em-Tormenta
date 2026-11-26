@@ -48,694 +48,108 @@
             <!-- Cabeçalho -->
             <div class="cabecalho_superior">
                 <h1>Perguntas</h1>
-                <span class="contador_afirmacao">Afirmação 3 de 10</span>
+                <span class="contador_afirmacao" id="contador_afirmacao"></span>
             </div>
 
             <!-- Card Principal da Pergunta -->
             <div class="card_pergunta">
-                <p class="texto_afirmacao">
-                    Prefiro seguir um plano detalhado<br>
-                    a improvisar durante a sessão.
-                </p>
+                <p class="texto_afirmacao" id="texto_afirmacao"></p>
 
-                <div id="div_opcoes" class="opcoes_container">
-                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                <div class="opcoes_container">
+                    <button type="button" class="opcao_resposta" aria-pressed="false" onclick="selecionarOpcao(1)">
                         <h2>1</h2>
                         <p>Discordo totalmente</p>
                     </button>
 
-                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                    <button type="button" class="opcao_resposta" aria-pressed="false" onclick="selecionarOpcao(2)">
                         <h2>2</h2>
                         <p>Discordo</p>
                     </button>
 
-                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                    <button type="button" class="opcao_resposta" aria-pressed="false" onclick="selecionarOpcao(3)">
                         <h2>3</h2>
                         <p>Neutro</p>
                     </button>
 
-                    <button type="button" class="opcao_resposta selecionada" onclick="selecionarOpcao(this)">
+                    <button type="button" class="opcao_resposta" aria-pressed="false" onclick="selecionarOpcao(4)">
                         <h2>4</h2>
                         <p>Concordo</p>
                     </button>
 
-                    <button type="button" class="opcao_resposta" onclick="selecionarOpcao(this)">
+                    <button type="button" class="opcao_resposta" aria-pressed="false" onclick="selecionarOpcao(5)">
                         <h2>5</h2>
                         <p>Concordo totalmente</p>
                     </button>
                 </div>
+
+                <!-- Mensagem de erro (fica escondida enquanto estiver vazia) -->
+                <p class="erro_pergunta" id="erro_pergunta"></p>
             </div>
 
             <!-- Rodapé com Botões e Aviso -->
             <div class="rodape_perguntas">
-                <button type="button" class="botao_voltar">voltar</button>
-                <button type="button" class="botao_proxima">próxima</button>
+                <p class="aviso_teste">A pergunta avança automaticamente após a resposta. Ao concluir, o relatório é atualizado.</p>
             </div>
 
         </div>
     </section>
 
+    <script src="perguntas_dados.js"></script>
     <script>
-        let contador = 0;
-        let Perguntas = [
-            {
-                "eixo": "Competitividade",
-                "invertida": false,
-                "pergunta": "Gosto de desafios em que o resultado mostra quem foi melhor.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Mecânica",
-                "invertida": false,
-                "pergunta": "Fico satisfeito quando encontro uma combinação de poderes que funciona muito bem.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Interpretação",
-                "invertida": false,
-                "pergunta": "Aceito deixar meu personagem passar por dificuldades se isso deixar a história mais interessante.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Social",
-                "invertida": true,
-                "pergunta": "Prefiro ficar em silêncio e deixar os outros conversarem com os personagens do mundo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Colaboração",
-                "invertida": false,
-                "pergunta": "Costumo abrir mão de uma vantagem minha se isso ajudar o grupo a avançar.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Combate",
-                "invertida": false,
-                "pergunta": "Gosto de escolher poderes e equipamentos pensando em como serão usados em batalha.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Competitividade",
-                "invertida": false,
-                "pergunta": "Me esforço para ter o melhor desempenho do grupo durante a sessão.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Interpretação",
-                "invertida": false,
-                "pergunta": "Criar a personalidade, os medos e os objetivos do meu personagem é uma das partes de que mais gosto.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Combate",
-                "invertida": true,
-                "pergunta": "Acho que os combates interrompem a parte mais interessante da sessão.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Estratégia",
-                "invertida": false,
-                "pergunta": "Gosto de combinar um plano com o grupo antes de entrar em uma missão.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Colaboração",
-                "invertida": false,
-                "pergunta": "Gosto de montar meu personagem pensando em como ele pode ajudar o grupo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Improviso",
-                "invertida": false,
-                "pergunta": "Gosto de inventar soluções criativas para problemas que não estavam previstos.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Estratégia",
-                "invertida": false,
-                "pergunta": "Gosto de usar o terreno e os recursos disponíveis a meu favor para superar desafios.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Exploração",
-                "invertida": false,
-                "pergunta": "Gosto de investigar ruínas, masmorras e lugares escondidos, mesmo sem uma missão ligada a eles.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Social",
-                "invertida": false,
-                "pergunta": "Gosto de fazer amizade com os personagens do mundo, como mercadores e moradores.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Interpretação",
-                "invertida": true,
-                "pergunta": "Me sinto desconfortável quando preciso falar como o meu personagem.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Exploração",
-                "invertida": true,
-                "pergunta": "Prefiro seguir direto o caminho da missão a me desviar para explorar lugares.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Estratégia",
-                "invertida": false,
-                "pergunta": "Fico mais satisfeito quando uma situação difícil é resolvida pela inteligência do que pela força.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Exploração",
-                "invertida": false,
-                "pergunta": "Fico curioso para descobrir o que há além do próximo mapa ou da próxima cidade.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Exploração",
-                "invertida": false,
-                "pergunta": "Descobrir segredos e tesouros escondidos é uma das partes de que mais gosto em um jogo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Combate",
-                "invertida": false,
-                "pergunta": "Enfrentar um inimigo poderoso é um dos momentos mais emocionantes do jogo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Estratégia",
-                "invertida": false,
-                "pergunta": "Antes de agir, gosto de analisar todas as opções e escolher a mais eficiente.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Improviso",
-                "invertida": true,
-                "pergunta": "Fico desconfortável quando preciso decidir algo sem ter um plano.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Competitividade",
-                "invertida": true,
-                "pergunta": "Não me importo com quem foi melhor em um desafio; o importante é a diversão do grupo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Narrativa",
-                "invertida": false,
-                "pergunta": "Fico ansioso para saber o que vai acontecer na próxima parte da história.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Interpretação",
-                "invertida": false,
-                "pergunta": "Tomo decisões pensando no que meu personagem faria, e não no que seria mais vantajoso.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Improviso",
-                "invertida": false,
-                "pergunta": "Me divirto quando algo inesperado muda os rumos da sessão.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Improviso",
-                "invertida": false,
-                "pergunta": "Me adapto rápido quando o plano do grupo dá errado.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Mecânica",
-                "invertida": false,
-                "pergunta": "Conhecer as regras a fundo me ajuda a aproveitar melhor o jogo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Social",
-                "invertida": false,
-                "pergunta": "Gosto de negociar, convencer e conversar para resolver os problemas da aventura.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Mecânica",
-                "invertida": true,
-                "pergunta": "Regras e números me deixam entediado durante o jogo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Competitividade",
-                "invertida": false,
-                "pergunta": "Fico motivado quando posso comparar meu desempenho com o dos outros jogadores.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Mecânica",
-                "invertida": false,
-                "pergunta": "Prefiro quando as regras do jogo são seguidas à risca, sem muitas exceções.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Interpretação",
-                "invertida": false,
-                "pergunta": "Gosto de falar com a voz e os trejeitos do meu personagem.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Colaboração",
-                "invertida": false,
-                "pergunta": "Fico feliz quando um colega de grupo tem seu momento de destaque.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Estratégia",
-                "invertida": true,
-                "pergunta": "Planejar com antecedência tira a graça da aventura para mim.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Narrativa",
-                "invertida": false,
-                "pergunta": "Gosto de conhecer a história e a origem do mundo onde a aventura acontece.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Combate",
-                "invertida": false,
-                "pergunta": "Um bom combate tático é o ponto alto de uma sessão.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Interpretação",
-                "invertida": false,
-                "pergunta": "Interpretar meu personagem é mais divertido do que vencer um combate.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Colaboração",
-                "invertida": true,
-                "pergunta": "Prefiro tomar as decisões sozinho a esperar a opinião de todo o grupo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Mecânica",
-                "invertida": false,
-                "pergunta": "Ler o livro de regras e descobrir combinações de habilidades é parte da diversão para mim.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Combate",
-                "invertida": false,
-                "pergunta": "Fico animado quando a sessão chega ao momento de lutar.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Narrativa",
-                "invertida": false,
-                "pergunta": "Os momentos marcantes da história de uma campanha ficam comigo por muito tempo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Social",
-                "invertida": false,
-                "pergunta": "Aproveito as pausas da sessão para conversar com o grupo e conhecer melhor os outros jogadores.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Narrativa",
-                "invertida": false,
-                "pergunta": "Gosto quando os acontecimentos da campanha se ligam em uma grande trama.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Competitividade",
-                "invertida": false,
-                "pergunta": "Me incomoda perder, mesmo em um jogo entre amigos.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Improviso",
-                "invertida": false,
-                "pergunta": "Prefiro reagir ao que acontece na mesa a seguir um roteiro definido.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Mecânica",
-                "invertida": false,
-                "pergunta": "Gosto de montar a ficha do meu personagem escolhendo cada habilidade com cuidado.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Narrativa",
-                "invertida": true,
-                "pergunta": "Os detalhes da história e do mundo me interessam pouco durante o jogo.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Social",
-                "invertida": false,
-                "pergunta": "Converso com os personagens do mestre por mais tempo do que o necessário.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Colaboração",
-                "invertida": false,
-                "pergunta": "Gosto quando o grupo toma as decisões juntos, mesmo que demore.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            },
-            {
-                "eixo": "Exploração",
-                "invertida": false,
-                "pergunta": "Gosto de explorar cada canto do mapa antes de seguir a história principal.",
-                "opcoes": [
-                    "Discordo totalmente",
-                    "Discordo",
-                    "Neutro",
-                    "Concordo",
-                    "Concordo totalmente"
-                ]
-            }
-        ]
-
         function abrir_menu() {
             const menu = document.getElementById('div_menu');
             menu.classList.toggle('active');
         }
 
-        function selecionarOpcao(elemento) {
+        let contador = 0;
+        const respostas = Perguntas.map(() => null);
+
+        function mostrarPergunta() {
+            document.getElementById('texto_afirmacao').textContent = Perguntas[contador].pergunta;
+            document.getElementById('contador_afirmacao').textContent = 'Afirmação ' + (contador + 1) + ' de ' + Perguntas.length;
+            document.getElementById('erro_pergunta').textContent = '';
+
+            // marca só a opção escolhida (a nota 1 fica na posição 0, e assim por diante)
             const opcoes = document.querySelectorAll('.opcao_resposta');
-            opcoes.forEach(opcao => opcao.classList.remove('selecionada'));
-            elemento.classList.add('selecionada');
+            for (let i = 0; i < opcoes.length; i++) {
+                opcoes[i].classList.remove('selecionada');
+                opcoes[i].setAttribute('aria-pressed', 'false');
+            }
+            if (respostas[contador] !== null) {
+                opcoes[respostas[contador] - 1].classList.add('selecionada');
+                opcoes[respostas[contador] - 1].setAttribute('aria-pressed', 'true');
+            }
         }
 
+        function selecionarOpcao(nota) {
+            respostas[contador] = nota;
+            if (contador === Perguntas.length - 1) {
+                gravarRespostas();
+            } else {
+                contador++;
+                mostrarPergunta();
+            }
+        }
 
+        function gravarRespostas() {
+            const paraGravar = Perguntas.map((pergunta, i) => ({
+                pergunta_id: i + 1,
+                eixo: pergunta.eixo,
+                invertida: pergunta.invertida,
+                valor: respostas[i]
+            }));
+
+            try {
+                localStorage.setItem('resultadoPerguntas', JSON.stringify(paraGravar));
+            } catch (erro) {
+                console.error('Não foi possível salvar as respostas.', erro);
+                document.getElementById('erro_pergunta').textContent = 'Não foi possível salvar suas respostas. Verifique as permissões do navegador e tente novamente.';
+                return;
+            }
+            window.location.href = 'relatorio.html';
+        }
+
+        mostrarPergunta();
     </script>
 
 </body>
