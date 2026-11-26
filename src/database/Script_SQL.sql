@@ -50,13 +50,13 @@ CREATE TABLE respostas (
 );
 
 -- Comando para refazer o teste:
--- Se o usuario clicar em refazer teste os seguintes comandos devem ser ativados
+-- Se o usuario clicar em refazer teste os seguintes comandos devem ser ativados juntamente com os selects novos
 
 DELETE FROM respostas 
-	WHERE tentativa_id = (SELECT id FROM tentativas WHERE usuario_id = 1);
+	WHERE tentativa_id = (SELECT id FROM tentativas WHERE fk_usuario = 1);
 
 DELETE FROM tentativas
-	WHERE usuario_id = 1;
+	WHERE fk_usuario = 1;
     
 -- A partir deste ponto é só realizar o novo insert, esses deletes serão ativados sempre que o botão gravar no site for apertado!
 
@@ -77,7 +77,7 @@ SELECT
 	FROM tentativas t
 		JOIN respostas r ON r.tentativa_id = t.id
 		JOIN perguntas p ON p.id = r.pergunta_id
-		JOIN eixos e ON e.id = p.eixo_id
-			WHERE t.usuario_id = 1
+		JOIN eixos e ON e.fk_eixo = p.eixo_id
+			WHERE t.fk_usuario = 1
 				GROUP BY e.id, e.codigo, e.nome, e.no_radar
 					ORDER BY e.id;

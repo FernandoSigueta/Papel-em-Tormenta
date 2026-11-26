@@ -15,7 +15,7 @@
         </button>
 
         <div id="div_menu" class="div_links">
-            
+
             <div class="div_logo_menu">
                 <div class="icone_logo"><img src="../assets/icone_logo.png" id="logo_menu"></div>
 
@@ -26,24 +26,35 @@
             </div>
 
             <div class="links_dash">
-                <a href="">Home</a>
-                <a href="">Perguntas</a>
-                <a href="">Relatório</a>
+                <a href="home_dash.html" class="pagina_atual">
+                    <img src="../assets/dashboard/icone_home_ativo.svg" class="icone_menu"> Recepção
+                </a>
+                <a href="perguntas.html">
+                    <img src="../assets/dashboard/icone_perguntas.svg" class="icone_menu"> Perguntas
+                </a>
+                <a href="relatorio.html">
+                    <img src="../assets/dashboard/icone_relatorio.svg" class="icone_menu"> Relatório
+                </a>
             </div>
         </div>
     </section>
-</body>
 
-<script>
-    function abrir_menu() {
-        const menu = document.getElementById('div_menu');
+    <section>
+        
+    </section>
 
-        if (menu.classList.contains('active')) {
-            menu.classList.remove('active');
-        } else {
-            menu.classList.add('active');
+    <script>
+        function abrir_menu() {
+            const menu = document.getElementById('div_menu');
+
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            } else {
+                menu.classList.add('active');
+            }
         }
-    }
-</script>
+    </script>
+
+</body>
 
 </html>

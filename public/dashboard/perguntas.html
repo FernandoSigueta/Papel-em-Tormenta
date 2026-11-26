@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dash.css">
+</head>
+
+<body>
+    <section id="menu">
+        <button id="botao_menu" onclick="abrir_menu()">
+            <img src="../assets/menu-icon.svg" style="height: 2rem; width: 2rem;">
+        </button>
+
+        <div id="div_menu" class="div_links">
+
+            <div class="div_logo_menu">
+                <div class="icone_logo"><img src="../assets/icone_logo.png" id="logo_menu"></div>
+
+                <div class="texto_logo">
+                    <h1>Fichas em Tormenta </h1>
+                    <span>Estilos de Jogo</span>
+                </div>
+            </div>
+
+            <div class="links_dash">
+                <a href="home_dash.html">
+                    <img src="../assets/dashboard/icone_home_ativo.svg" class="icone_menu"> Recepção
+                </a>
+                <a href="perguntas.html" class="pagina_atual">
+                    <img src="../assets/dashboard/icone_perguntas.svg" class="icone_menu"> Perguntas
+                </a>
+                <a href="relatorio.html">
+                    <img src="../assets/dashboard/icone_relatorio.svg" class="icone_menu"> Relatório
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function abrir_menu() {
+            const menu = document.getElementById('div_menu');
+
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            } else {
+                menu.classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
