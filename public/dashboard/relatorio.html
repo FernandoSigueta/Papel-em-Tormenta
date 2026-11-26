@@ -113,6 +113,75 @@
                 menu.classList.add('active');
             }
         }
+
+        const contextoRadar = document.getElementById('graficoRadar').getContext('2d');
+
+        const graficoRadar = new Chart(contextoRadar, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Mecânica',
+                    'Estratégia',
+                    'Combate',
+                    'Exploração',
+                    'Narrativa',
+                    'Interpretação',
+                    'Social',
+                    'Colaboração'
+                ],
+                datasets: [{
+                    label: 'Pontuação',
+                    // Valores de exemplo (substitua pelos dados vindos do backend)
+                    data: [4.60, 4.20, 3.80, 3.40, 3.10, 3.00, 2.50, 2.20],
+                    backgroundColor: 'rgba(158, 35, 46, 0.55)', // Preenchimento vermelho translúcido
+                    borderColor: '#E8C27A',                     // Linha de contorno dourada
+                    borderWidth: 2,
+                    pointBackgroundColor: '#F0D8AE',            // Bolinhas nos vértices
+                    pointBorderColor: '#E8C27A',
+                    pointRadius: 3.5,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false // Oculta a legenda superior
+                    },
+                    tooltip: {
+                        backgroundColor: '#211A19',
+                        titleColor: '#D7A65D',
+                        bodyColor: '#F0D8AE',
+                        borderColor: '#D7A65D',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    r: {
+                        min: 1, // Começa em 1 no centro, conforme a legenda do card
+                        max: 5, // Termina em 5 na borda externa
+                        ticks: {
+                            stepSize: 1,
+                            display: false // Oculta os números 1, 2, 3, 4, 5 sobre as linhas
+                        },
+                        grid: {
+                            color: 'rgba(215, 166, 93, 0.25)' // Linhas da teia em dourado translúcido
+                        },
+                        angleLines: {
+                            color: 'rgba(215, 166, 93, 0.25)' // Linhas radiais do centro até as pontas
+                        },
+                        pointLabels: {
+                            color: '#C9A979', // Cor dos nomes dos eixos ao redor do gráfico
+                            font: {
+                                family: 'Georgia, serif',
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
     </script>
 </body>
 
