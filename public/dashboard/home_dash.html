@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dash.css">
+</head>
+
+<body>
+    <section id="menu">
+        <button id="botao_menu" onclick="abrir_menu()">
+            <img src="../assets/menu.svg" style="height: 1rem; width: 1rem;">
+        </button>
+
+        <div id="div_menu" class="div_links">
+            <a href="">Home</a>
+            <a href="">Perguntas</a>
+            <a href="">Relatório</a>
+        </div>
+    </section>
+</body>
+
+<script>
+    function abrir_menu() {
+        const menu = document.getElementById('div_menu');
+        
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+        } else {
+            menu.classList.add('active');
+        }
+    }
+</script>
+
+</html>

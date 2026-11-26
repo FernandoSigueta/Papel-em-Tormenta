@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'tormenta';
+}
+
+#menu {
+    display: flex;
+    height: 100svh;
+    width: 4rem;
+    background-color: #8F3029;
+
+    border-right: 0.15rem #D7A65D solid;
+}
+
+.div_links {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100vh;
+    width: 15rem;
+
+    box-sizing: border-box;
+    background-color: #8F3029;
+    border-right: 0.15rem #D7A65D solid;
+
+    padding: 5rem 1rem 1rem;
+
+    z-index: 1;
+}
+
+.div_links.active {
+    display: flex;
+}
+
+#botao_menu {
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    height: 2rem;
+    width: 2rem;
+    margin: .5rem;
+}
