@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dash.css">
+</head>
+
+<body>
+    <section id="menu">
+        <button id="botao_menu" onclick="abrir_menu()">
+            <img src="../assets/menu-icon.svg" style="height: 2rem; width: 2rem;">
+        </button>
+
+        <div id="div_menu" class="div_links">
+
+            <div class="div_logo_menu">
+                <div class="icone_logo"><img src="../assets/icone_logo.png" id="logo_menu"></div>
+
+                <div class="texto_logo">
+                    <h1>Fichas em Tormenta </h1>
+                    <span>Estilos de Jogo</span>
+                </div>
+            </div>
+
+            <div class="links_dash">
+                <a href="home_dash.html" class="pagina_atual">
+                    <img src="../assets/dashboard/icone_home_ativo.svg" class="icone_menu"> Recepção
+                </a>
+                <a href="perguntas.html">
+                    <img src="../assets/dashboard/icone_perguntas.svg" class="icone_menu"> Perguntas
+                </a>
+                <a href="relatorio.html">
+                    <img src="../assets/dashboard/icone_relatorio.svg" class="icone_menu"> Relatório
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="recepcao_usuario">
+
+        <!-- Título e boas-vindas -->
+        <div class="recepcao_titulo">
+            <h1>Bem-vindo, <span id="nome_usuario">Trov</span></h1>
+            <p>
+                Aqui você descobre seu estilo de jogo e consulta seus resultados quando quiser.
+                A dashboard tem três áreas, todas no menu ao lado.
+            </p>
+        </div>
+
+        <!-- Dois painéis: como funciona / antes de começar -->
+        <div class="recepcao_paineis">
+
+            <div class="recepcao_passos">
+                <h2>Como funciona</h2>
+
+                <div class="passo">
+                    <div class="passo_numero">1</div>
+                    <div>
+                        <h3>Responda as perguntas</h3>
+                        <p>Leia cada afirmação e marque de 1 (discordo totalmente) a 5 (concordo totalmente).</p>
+                    </div>
+                </div>
+
+                <div class="passo">
+                    <div class="passo_numero">2</div>
+                    <div>
+                        <h3>Grave suas respostas</h3>
+                        <p>Elas ficam salvas na sua conta. Uma nova gravação substitui a anterior.</p>
+                    </div>
+                </div>
+
+                <div class="passo">
+                    <div class="passo_numero">3</div>
+                    <div>
+                        <h3>Consulte o relatório</h3>
+                        <p>Veja seu arquétipo, o gráfico de radar, os indicadores e os detalhes do seu estilo de jogo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recepcao_antes">
+                <h2>Antes de começar</h2>
+
+                <div class="fato">
+                    <span class="fato_numero">10</span>
+                    <span class="fato_texto">afirmações para responder</span>
+                </div>
+
+                <div class="fato">
+                    <span class="fato_numero">1–5</span>
+                    <span class="fato_texto">escala de concordância</span>
+                </div>
+
+                <div class="fato">
+                    <span class="fato_numero">1</span>
+                    <span class="fato_texto">versão salva por vez: sempre a última</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão e situação do teste -->
+        <div class="recepcao_acao">
+            <a href="perguntas.html" class="botao_comecar">Começar as perguntas</a>
+            <p id="situacao_teste">Situação do teste: nenhuma resposta gravada ainda.</p>
+        </div>
+
+    </section>
+
+    <script>
+        function abrir_menu() {
+            const menu = document.getElementById('div_menu');
+
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            } else {
+                menu.classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
