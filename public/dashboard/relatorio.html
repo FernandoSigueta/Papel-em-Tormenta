@@ -63,12 +63,6 @@
 
             <div class="grid_kpis">
                 <div class="card_kpi">
-                    <span class="kpi_label">Estilo predominante</span>
-                    <h2 class="kpi_valor" id="kpi_arquetipo">—</h2>
-                    <span class="kpi_subtexto">eixo com maior afinidade</span>
-                </div>
-
-                <div class="card_kpi">
                     <span class="kpi_label">Eixo mais forte</span>
                     <h2 class="kpi_valor" id="kpi_eixo_forte">—</h2>
                     <span class="kpi_subtexto" id="kpi_nota_forte">—</span>
@@ -371,7 +365,6 @@
             const mediaGeral = eixosPrincipais.reduce((soma, eixo) => soma + medias[eixo], 0) / eixosPrincipais.length;
             const formatarNota = (nota) => nota.toFixed(2).replace('.', ',');
 
-            document.getElementById('kpi_arquetipo').textContent = eixoForte.toUpperCase();
             document.getElementById('kpi_eixo_forte').textContent = eixoForte.toUpperCase();
             document.getElementById('kpi_nota_forte').textContent = `${formatarNota(medias[eixoForte])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
             document.getElementById('kpi_eixo_fraco').textContent = eixoFraco.toUpperCase();
