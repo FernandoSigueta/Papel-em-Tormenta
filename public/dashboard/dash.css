@@ -473,3 +473,306 @@ body {
     color: #C9A979;
 }
 /* FIM PERGUNTAS DASH */
+
+/* INICIO RELATORIO DASH */
+
+/* INICIO RELATORIO DASH */
+.background_relatorio {
+    flex-grow: 1;
+    min-height: 100svh;
+    box-sizing: border-box;
+    background-color: #211A19;
+    color: #F0D8AE;
+    padding: 3rem 4rem 4rem 8rem;
+
+    display: flex;
+    justify-content: center;
+}
+
+.container_relatorio {
+    width: 100%;
+    max-width: 68rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+/* 1. Cabeçalho Superior */
+.cabecalho_relatorio {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.titulo_relatorio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.titulo_relatorio h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    color: #D2404B;
+    letter-spacing: 0.05rem;
+}
+
+.titulo_relatorio p {
+    margin: 0;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    color: #C9A979;
+}
+
+.tag_exemplo {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+    padding: 0.2rem 0.75rem;
+    font-family: Georgia, serif;
+    font-size: 0.75rem;
+    color: #C9A979;
+    background-color: #2A2120;
+    border: 1px solid rgba(215, 166, 93, 0.45);
+    border-radius: 1rem;
+}
+
+.acao_refazer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.45rem;
+}
+
+.botao_refazer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.55rem 1.75rem;
+
+    background-color: #2A2120;
+    border: 1px solid rgba(215, 166, 93, 0.55);
+    border-radius: 0.4rem;
+
+    color: #F0D8AE;
+    font-family: 'tormenta';
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.botao_refazer:hover {
+    background-color: #8F2029;
+    border-color: #D7A65D;
+}
+
+.aviso_refazer {
+    font-family: Georgia, serif;
+    font-size: 0.75rem;
+    color: #C9A979;
+}
+
+/* 2. Grid de KPIs */
+.grid_kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.card_kpi {
+    box-sizing: border-box;
+    padding: 1.25rem 1.4rem;
+    background: linear-gradient(180deg, #96222C 0%, #7A1A22 100%);
+    border: 1px solid rgba(215, 166, 93, 0.45);
+    border-radius: 0.65rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.55rem;
+}
+
+.kpi_label {
+    font-family: Georgia, serif;
+    font-size: 0.78rem;
+    color: #F0D8AE;
+    opacity: 0.9;
+}
+
+.kpi_valor {
+    margin: 0;
+    font-family: 'tormenta';
+    font-size: 1.35rem;
+    font-weight: normal;
+    line-height: 1.2;
+    color: #E8C27A;
+    text-transform: uppercase;
+}
+
+.kpi_subtexto {
+    font-family: Georgia, serif;
+    font-size: 0.75rem;
+    color: #F0D8AE;
+    opacity: 0.85;
+}
+
+/* 3. Grid de Gráficos (Chart.js) */
+.grid_graficos {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 1.25rem;
+}
+
+.card_grafico {
+    box-sizing: border-box;
+    padding: 1.75rem;
+    background-color: #2A2120;
+    border: 1px solid rgba(215, 166, 93, 0.45);
+    border-radius: 0.8rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card_grafico h3 {
+    margin: 0;
+    font-family: 'tormenta';
+    font-size: 1.15rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #D7A65D;
+    letter-spacing: 0.04rem;
+}
+
+.wrapper_canvas_radar {
+    position: relative;
+    width: 100%;
+    height: 22rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper_canvas_barras {
+    position: relative;
+    width: 100%;
+    height: 24rem;
+}
+
+.legenda_radar {
+    margin: 0;
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 0.78rem;
+    color: #C9A979;
+}
+
+/* 4. Card Inferior do Arquétipo */
+.card_arquetipo_detalhe {
+    box-sizing: border-box;
+    padding: 2rem;
+    background-color: #2A2120;
+    border: 1px solid rgba(215, 166, 93, 0.45);
+    border-radius: 0.8rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.arquetipo_intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.arquetipo_intro h2 {
+    margin: 0;
+    font-family: 'tormenta';
+    font-size: 1.5rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #D7A65D;
+    letter-spacing: 0.04rem;
+}
+
+.arquetipo_subtitulo {
+    margin: 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 0.92rem;
+    color: #C9A979;
+}
+
+.arquetipo_descricao {
+    margin: 0.25rem 0 0;
+    max-width: 48rem;
+    font-family: Georgia, serif;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: #F0D8AE;
+}
+
+.grid_subcards_arquetipo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.subcard_lista {
+    box-sizing: border-box;
+    padding: 1.25rem 1.4rem;
+    background-color: #211A19;
+    border: 1px solid rgba(215, 166, 93, 0.35);
+    border-radius: 0.6rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.subcard_lista h4 {
+    margin: 0;
+    font-family: 'tormenta';
+    font-size: 0.95rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #D7A65D;
+    letter-spacing: 0.03rem;
+}
+
+.subcard_lista ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.subcard_lista li {
+    font-family: Georgia, serif;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #F0D8AE;
+}
+
+/* Responsividade básica para telas menores */
+@media (max-width: 1024px) {
+    .grid_kpis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid_graficos,
+    .grid_subcards_arquetipo {
+        grid-template-columns: 1fr;
+    }
+}
+/* FIM RELATORIO DASH */
+
+/* FIM RELATORIO DASH */

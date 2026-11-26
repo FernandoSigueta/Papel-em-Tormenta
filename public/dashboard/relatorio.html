@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard - Relatório</title>
     <link rel="stylesheet" href="dash.css">
+    <!-- Importação do Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -42,6 +44,117 @@
         </div>
     </section>
 
+    <section class="background_relatorio">
+        <div class="container_relatorio">
+
+            <!-- 1. Cabeçalho Superior -->
+            <div class="cabecalho_relatorio">
+                <div class="titulo_relatorio">
+                    <h1>Relatório</h1>
+                    <p id="data_geracao">Gerado a partir das respostas gravadas em --/--/----.</p>
+                    <span class="tag_exemplo">Dados de exemplo</span>
+                </div>
+
+                <div class="acao_refazer">
+                    <a href="perguntas.html" class="botao_refazer">Refazer<br>Teste</a>
+                    <span class="aviso_refazer">Ao gravar um novo teste, este relatório é substituído.</span>
+                </div>
+            </div>
+
+            <!-- 2. Linha de KPIs (Preenchidas pelo Backend) -->
+            <div class="grid_kpis">
+                <div class="card_kpi">
+                    <span class="kpi_label">Arquétipo</span>
+                    <h2 class="kpi_valor" id="kpi_arquetipo">O ESTRATEGISTA</h2>
+                    <span class="kpi_subtexto">Seu perfil principal</span>
+                </div>
+
+                <div class="card_kpi">
+                    <span class="kpi_label">Eixo mais forte</span>
+                    <h2 class="kpi_valor" id="kpi_eixo_forte">MECÂNICA</h2>
+                    <span class="kpi_subtexto" id="kpi_nota_forte">4.60 de 5</span>
+                </div>
+
+                <div class="card_kpi">
+                    <span class="kpi_label">Eixo mais fraco</span>
+                    <h2 class="kpi_valor" id="kpi_eixo_fraco">COLABORAÇÃO</h2>
+                    <span class="kpi_subtexto" id="kpi_nota_fraco">2.20 de 5</span>
+                </div>
+
+                <div class="card_kpi">
+                    <span class="kpi_label">Média geral</span>
+                    <h2 class="kpi_valor" id="kpi_media_geral">3.36</h2>
+                    <span class="kpi_subtexto">entre os 8 eixos do radar</span>
+                </div>
+            </div>
+
+            <!-- 3. Área de Gráficos (Chart.js) -->
+            <div class="grid_graficos">
+                <!-- Coluna Esquerda: Radar -->
+                <div class="card_grafico">
+                    <h3>Gráfico de Radar</h3>
+                    <div class="wrapper_canvas_radar">
+                        <canvas id="graficoRadar"></canvas>
+                    </div>
+                    <p class="legenda_radar">Notas de 1 (centro) a 5 (borda externa).</p>
+                </div>
+
+                <!-- Coluna Direita: Barras Horizontais (Detalhe por Eixo) -->
+                <div class="card_grafico">
+                    <h3>Detalhe por Eixo</h3>
+                    <div class="wrapper_canvas_barras">
+                        <canvas id="graficoEixos"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Card Inferior: Detalhes do Arquétipo (Preenchido pelo Backend) -->
+            <div class="card_arquetipo_detalhe">
+                <div class="arquetipo_intro">
+                    <h2 id="detalhe_titulo_arquetipo">O ESTRATEGISTA</h2>
+                    <p class="arquetipo_subtitulo" id="detalhe_subtitulo">
+                        Planeja, analisa e sempre busca a melhor solução.
+                    </p>
+                    <p class="arquetipo_descricao" id="detalhe_descricao">
+                        Você valoriza a mecânica, gosta de pensar em estratégias, explorar as possibilidades do
+                        sistema e tomar decisões bem fundamentadas. Seu estilo de jogo se destaca pela
+                        inteligência e pela busca por eficiência.
+                    </p>
+                </div>
+
+                <div class="grid_subcards_arquetipo">
+                    <div class="subcard_lista">
+                        <h4>Pontos Fortes</h4>
+                        <ul id="lista_pontos_fortes">
+                            <li>Pensamento estratégico</li>
+                            <li>Domínio das regras</li>
+                            <li>Busca por soluções eficientes</li>
+                        </ul>
+                    </div>
+
+                    <div class="subcard_lista">
+                        <h4>Pontos de Atenção</h4>
+                        <ul id="lista_pontos_atencao">
+                            <li>Pode se frustrar quando os planos não funcionam</li>
+                            <li>Tende a focar demais na otimização</li>
+                            <li>Pode deixar a colaboração em segundo plano</li>
+                        </ul>
+                    </div>
+
+                    <div class="subcard_lista">
+                        <h4>Melhores Campanhas</h4>
+                        <ul id="lista_melhores_campanhas">
+                            <li>Aventuras desafiadoras</li>
+                            <li>Campanhas com liberdade tática</li>
+                            <li>Mundos ricos em sistemas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <script>
         function abrir_menu() {
             const menu = document.getElementById('div_menu');
@@ -53,7 +166,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>
