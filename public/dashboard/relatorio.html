@@ -39,7 +39,7 @@
                     <img src="../assets/dashboard/icone_relatorio_ativo.svg" class="icone_menu"> Relatório
                 </a>
                 <div class="div_botao_sair links_dash">
-                    <a href="../home/index.html">
+                    <a href="../home/index.html" data-logout>
                         <img src="../assets/dashboard/log-out.svg" class="icone_menu">Sair
                     </a>
                 </div>
@@ -113,6 +113,7 @@
         </div>
     </section>
 
+    <script src="auth.js"></script>
     <script>
         function abrir_menu() {
             const menu = document.getElementById('div_menu');
@@ -303,80 +304,81 @@
             )
         );
 
-        function carregarRelatorio() {
+        async function carregarRelatorio() {
             const aviso = document.getElementById('aviso_relatorio');
-            let resultadoSalvo;
             try {
-                resultadoSalvo = localStorage.getItem('resultadoPerguntas');
-            } catch (erro) {
-                console.error('Não foi possível acessar as respostas salvas.', erro);
-                aviso.textContent = 'O navegador não permitiu acessar as respostas salvas.';
-                return;
-            }
-
-            if (!resultadoSalvo) {
-                aviso.textContent = 'Responda ao questionário para visualizar seu relatório.';
-                return;
-            }
-
-            let respostasSalvas;
-            try {
-                respostasSalvas = JSON.parse(resultadoSalvo);
-            } catch (erro) {
-                console.error('As respostas salvas não puderam ser lidas.', erro);
-                aviso.textContent = 'Não foi possível carregar as respostas. Refaça o questionário para atualizar o relatório.';
-                return;
-            }
-
-            const respostasValidas = Array.isArray(respostasSalvas)
-                && respostasSalvas.length === Perguntas.length
-                && respostasSalvas.every((resposta, index) =>
-                    resposta
-                    && resposta.pergunta_id === index + 1
-                    && resposta.eixo === Perguntas[index].eixo
-                    && resposta.invertida === Perguntas[index].invertida
-                    && Number.isInteger(resposta.valor)
-                    && resposta.valor >= 1
-                    && resposta.valor <= 5
-                );
-
-            if (!respostasValidas) {
-                aviso.textContent = 'As respostas salvas são incompatíveis com este questionário. Refaça o teste para atualizar o relatório.';
-                return;
-            }
-
-            const notasPorEixo = Object.fromEntries(eixos.map((eixo) => [eixo, []]));
-            Perguntas.forEach((pergunta, index) => {
-                const valor = respostasSalvas[index].valor;
-                notasPorEixo[pergunta.eixo].push(pergunta.invertida ? 6 - valor : valor);
-            });
-
-            const medias = {};
-            for (const eixo of eixos) {
-                if (notasPorEixo[eixo].length !== PERGUNTAS_POR_EIXO) {
-                    aviso.textContent = 'A distribuição das perguntas está incompleta. Não foi possível calcular o relatório.';
+                const resposta = await fetch('/api/questionario/respostas');
+                if (resposta.status === 401) {
+                    window.location.replace('../login_cadastro/login_cad.html');
                     return;
                 }
-                medias[eixo] = notasPorEixo[eixo].reduce((soma, nota) => soma + nota, 0) / PERGUNTAS_POR_EIXO;
+                const dados = await resposta.json();
+                if (!resposta.ok) {
+                    throw new Error(dados.mensagem || 'Não foi possível carregar o relatório.');
+                }
+                const respostasSalvas = dados.respostas;
+
+                if (!Array.isArray(respostasSalvas)) {
+                    throw new Error('O servidor retornou respostas em formato inválido.');
+                }
+                if (respostasSalvas.length === 0) {
+                    aviso.textContent = 'Responda ao questionário para visualizar seu relatório.';
+                    return;
+                }
+
+                const respostasValidas = Array.isArray(respostasSalvas)
+                    && respostasSalvas.length === Perguntas.length
+                    && respostasSalvas.every((resposta, index) =>
+                        resposta
+                        && resposta.pergunta_id === index + 1
+                        && resposta.eixo === Perguntas[index].eixo
+                        && Boolean(resposta.invertida) === Perguntas[index].invertida
+                        && Number.isInteger(resposta.valor)
+                        && resposta.valor >= 1
+                        && resposta.valor <= 5
+                    );
+
+                if (!respostasValidas) {
+                    aviso.textContent = 'As respostas recebidas não correspondem ao questionário atual. Refaça o teste para atualizar o relatório.';
+                    return;
+                }
+
+                const notasPorEixo = Object.fromEntries(eixos.map((eixo) => [eixo, []]));
+                Perguntas.forEach((pergunta, index) => {
+                    const valor = respostasSalvas[index].valor;
+                    notasPorEixo[pergunta.eixo].push(pergunta.invertida ? 6 - valor : valor);
+                });
+
+                const medias = {};
+                for (const eixo of eixos) {
+                    if (notasPorEixo[eixo].length !== PERGUNTAS_POR_EIXO) {
+                        aviso.textContent = 'A distribuição das perguntas está incompleta. Não foi possível calcular o relatório.';
+                        return;
+                    }
+                    medias[eixo] = notasPorEixo[eixo].reduce((soma, nota) => soma + nota, 0) / PERGUNTAS_POR_EIXO;
+                }
+
+                const eixoForte = eixos.reduce((melhor, eixo) => medias[eixo] > medias[melhor] ? eixo : melhor);
+                const eixoFraco = eixos.reduce((menor, eixo) => medias[eixo] < medias[menor] ? eixo : menor);
+                const mediaGeral = eixosPrincipais.reduce((soma, eixo) => soma + medias[eixo], 0) / eixosPrincipais.length;
+                const formatarNota = (nota) => nota.toFixed(2).replace('.', ',');
+
+                document.getElementById('kpi_eixo_forte').textContent = eixoForte.toUpperCase();
+                document.getElementById('kpi_nota_forte').textContent = `${formatarNota(medias[eixoForte])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
+                document.getElementById('kpi_eixo_fraco').textContent = eixoFraco.toUpperCase();
+                document.getElementById('kpi_nota_fraco').textContent = `${formatarNota(medias[eixoFraco])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
+                document.getElementById('kpi_media_geral').textContent = formatarNota(mediaGeral);
+
+                graficoRadar.data.datasets[0].data = eixosPrincipais.map((eixo) => medias[eixo]);
+                graficoRadar.update();
+                graficoEixosPrincipais.data.datasets[0].data = eixosPrincipais.map((eixo) => medias[eixo]);
+                graficoEixosPrincipais.update();
+                graficoEixosComplementares.data.datasets[0].data = eixosComplementares.map((eixo) => medias[eixo]);
+                graficoEixosComplementares.update();
+            } catch (erro) {
+                console.error('Não foi possível carregar o relatório.', erro);
+                aviso.textContent = 'Não foi possível carregar os resultados do servidor. Tente novamente.';
             }
-
-            const eixoForte = eixos.reduce((melhor, eixo) => medias[eixo] > medias[melhor] ? eixo : melhor);
-            const eixoFraco = eixos.reduce((menor, eixo) => medias[eixo] < medias[menor] ? eixo : menor);
-            const mediaGeral = eixosPrincipais.reduce((soma, eixo) => soma + medias[eixo], 0) / eixosPrincipais.length;
-            const formatarNota = (nota) => nota.toFixed(2).replace('.', ',');
-
-            document.getElementById('kpi_eixo_forte').textContent = eixoForte.toUpperCase();
-            document.getElementById('kpi_nota_forte').textContent = `${formatarNota(medias[eixoForte])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
-            document.getElementById('kpi_eixo_fraco').textContent = eixoFraco.toUpperCase();
-            document.getElementById('kpi_nota_fraco').textContent = `${formatarNota(medias[eixoFraco])} de 5 · média das ${PERGUNTAS_POR_EIXO} respostas`;
-            document.getElementById('kpi_media_geral').textContent = formatarNota(mediaGeral);
-
-            graficoRadar.data.datasets[0].data = eixosPrincipais.map((eixo) => medias[eixo]);
-            graficoRadar.update();
-            graficoEixosPrincipais.data.datasets[0].data = eixosPrincipais.map((eixo) => medias[eixo]);
-            graficoEixosPrincipais.update();
-            graficoEixosComplementares.data.datasets[0].data = eixosComplementares.map((eixo) => medias[eixo]);
-            graficoEixosComplementares.update();
         }
 
         carregarRelatorio();

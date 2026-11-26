@@ -43,3 +43,12 @@ Trello <br>
     <td align="center"><img src="https://github.com/FernandoSigueta.png" width="80"><br><a href="https://github.com/FernandoSigueta">Fernando Sigueta</a><br></td>
   </tr>
 </table>
+
+## Executar o dashboard
+
+1. Instale as dependências com `npm install`.
+2. Copie `.env.example` para `.env` e configure a conexão do MySQL e `SESSION_SECRET`.
+3. Execute `src/database/Script_SQL.sql` no MySQL para criar e popular o banco `ficha_tormenta`.
+4. Inicie o servidor com `npm start` e acesse `http://localhost:3000`.
+
+O cadastro e login usam sessões no banco de dados. As respostas e tentativas são salvas por usuário; refazer o teste substitui a tentativa anterior.

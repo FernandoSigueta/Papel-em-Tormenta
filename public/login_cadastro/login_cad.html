@@ -47,7 +47,7 @@
                 <!-- Entrar -->
                 <div id="panel-entrar">
                     <h2>Bem-vindo de volta</h2>
-                    <form id="form-entrar" novalidate onsubmit="return entrar()">
+                    <form id="form-entrar" novalidate onsubmit="return entrar(event)">
                         <div class="field">
                             <label for="login-email">E-mail</label>
                             <div class="control">
@@ -74,7 +74,7 @@
                 <!-- Criar conta -->
                 <div id="panel-cadastro" class="oculto">
                     <h2>Crie sua ficha</h2>
-                    <form id="form-cadastro" novalidate onsubmit="return cadastrar()">
+                    <form id="form-cadastro" novalidate onsubmit="return cadastrar(event)">
                         <div class="field">
                             <label for="cad-nome">Nome de aventureiro</label>
                             <div class="control">
@@ -111,6 +111,7 @@
                             </div>
                             <p class="error" id="cad-confirma-err"></p>
                         </div>
+                        <p class="error" id="cad-geral"></p>
                         <button class="btn" type="submit">Criar conta</button>
                     </form>
                 </div>
@@ -120,7 +121,7 @@
                     <img src="../assets/icone_logo.png" style="height: 10svh; width: 10svh;" class="sigil">
                     <h2 id="ok-title"></h2>
                     <p id="ok-text"></p>
-                    <a class="btn" href="#">Começar o quiz</a>
+                    <a class="btn" href="../dashboard/home_dash.html">Acessar painel</a>
                     <button class="btn btn--quiet" type="button" onclick="sair()">Sair</button>
                 </div>
             </div>
@@ -190,6 +191,11 @@
     function limpar(idCampo) {
         erro(idCampo, "");
         document.getElementById("login-geral").textContent = "";
+        document.getElementById("cad-geral").textContent = "";
+    }
+
+    function emailValido(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
     // ------------------------------------------------------------
@@ -202,13 +208,15 @@
 
         document.getElementById("ok-title").textContent = "Olá, " + nome;
         document.getElementById("ok-text").textContent = texto;
+        document.querySelector("#panel-ok a").href = "../dashboard/home_dash.html";
         document.getElementById("panel-ok").classList.remove("oculto");
     }
 
     // ------------------------------------------------------------
     // Enviar o formulário de login
     // ------------------------------------------------------------
-    function entrar() {
+    async function entrar(evento) {
+        evento.preventDefault();
         let email = document.getElementById("login-email").value.trim();
         let senha = document.getElementById("login-senha").value;
         let mensagemEmail = "";
@@ -220,15 +228,30 @@
             mensagemEmail = "Esse e-mail não parece válido.";
         }
 
-        if (senha === "") {
-            mensagemSenha = "Digite sua senha.";
+        if (senha.length < 8) {
+            mensagemSenha = "A senha precisa ter pelo menos 8 caracteres.";
         }
 
         let emailOk = erro("login-email", mensagemEmail);
         let senhaOk = erro("login-senha", mensagemSenha);
 
         if (emailOk && senhaOk) {
-            sucesso(email.split("@")[0], "Sua ficha está pronta. Retome o quiz ou veja seus resultados.");
+            try {
+                const resposta = await fetch("/api/usuarios/autenticar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, senha })
+                });
+                const dados = await resposta.json();
+                if (!resposta.ok) {
+                    document.getElementById("login-geral").textContent = dados.mensagem;
+                    return false;
+                }
+                sucesso(dados.usuario.nome, "Sua ficha está pronta. Acesse o painel para continuar.");
+            } catch (erro) {
+                console.error("Falha ao autenticar a conta.", erro);
+                document.getElementById("login-geral").textContent = "Não foi possível conectar ao servidor. Tente novamente.";
+            }
         } else {
             document.getElementById("login-geral").textContent = "Confira os campos acima.";
         }
@@ -239,7 +262,8 @@
     // ------------------------------------------------------------
     // Enviar o formulário de cadastro
     // ------------------------------------------------------------
-    function cadastrar() {
+    async function cadastrar(evento) {
+        evento.preventDefault();
         let nome = document.getElementById("cad-nome").value.trim();
         let email = document.getElementById("cad-email").value.trim();
         let senha = document.getElementById("cad-senha").value;
@@ -253,8 +277,8 @@
             mensagemNome = "Use pelo menos 3 caracteres.";
         }
 
-        if (email === "") {
-            mensagemEmail = "Digite seu e-mail.";
+        if (email === "" || !emailValido(email)) {
+            mensagemEmail = "Digite um e-mail válido.";
         }
 
         if (senha.length < 8) {
@@ -271,7 +295,25 @@
         let confirmaOk = erro("cad-confirma", mensagemConfirma);
 
         if (nomeOk && emailOk && senhaOk && confirmaOk) {
-            sucesso(nome, "Sua conta foi criada. Faça o quiz para descobrir seu arquétipo de jogador.");
+            try {
+                const resposta = await fetch("/api/usuarios/cadastrar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nome, email, senha })
+                });
+                const dados = await resposta.json();
+                if (!resposta.ok) {
+                    document.getElementById("cad-geral").textContent = dados.mensagem;
+                    if (resposta.status === 409) {
+                        erro("cad-email", dados.mensagem);
+                    }
+                    return false;
+                }
+                sucesso(dados.usuario.nome, "Sua conta foi criada. Acesse o painel para começar o teste.");
+            } catch (erro) {
+                console.error("Falha ao cadastrar a conta.", erro);
+                document.getElementById("cad-geral").textContent = "Não foi possível conectar ao servidor. Tente novamente.";
+            }
         }
 
         return false; // impede a página de recarregar
@@ -280,7 +322,18 @@
     // ------------------------------------------------------------
     // Botão Sair da tela de sucesso: limpa tudo e volta ao login
     // ------------------------------------------------------------
-    function sair() {
+    async function sair() {
+        try {
+            const resposta = await fetch("/api/usuarios/sair", { method: "POST" });
+            if (!resposta.ok) {
+                throw new Error("Não foi possível encerrar a sessão.");
+            }
+        } catch (erro) {
+            console.error("Falha ao encerrar a sessão.", erro);
+            document.getElementById("login-geral").textContent = "Não foi possível sair. Tente novamente.";
+            return;
+        }
+
         document.getElementById("form-entrar").reset();
         document.getElementById("form-cadastro").reset();
 

@@ -36,7 +36,7 @@
                     <img src="../assets/dashboard/icone_relatorio.svg" class="icone_menu"> Relatório
                 </a>
                 <div class="div_botao_sair links_dash">
-                    <a href="../home/index.html"> Sair </a>
+                    <a href="../home/index.html" data-logout> Sair </a>
                 </div>
             </div>
         </div>
@@ -94,6 +94,7 @@
         </div>
     </section>
 
+    <script src="auth.js"></script>
     <script src="perguntas_dados.js"></script>
     <script>
         function abrir_menu() {
@@ -131,22 +132,36 @@
             }
         }
 
-        function gravarRespostas() {
-            const paraGravar = Perguntas.map((pergunta, i) => ({
+        async function gravarRespostas() {
+            const erro = document.getElementById('erro_pergunta');
+            const opcoes = document.querySelectorAll('.opcao_resposta');
+            opcoes.forEach((opcao) => { opcao.disabled = true; });
+            erro.textContent = '';
+            const respostasParaEnviar = Perguntas.map((_, i) => ({
                 pergunta_id: i + 1,
-                eixo: pergunta.eixo,
-                invertida: pergunta.invertida,
                 valor: respostas[i]
             }));
 
             try {
-                localStorage.setItem('resultadoPerguntas', JSON.stringify(paraGravar));
-            } catch (erro) {
-                console.error('Não foi possível salvar as respostas.', erro);
-                document.getElementById('erro_pergunta').textContent = 'Não foi possível salvar suas respostas. Verifique as permissões do navegador e tente novamente.';
-                return;
+                const resposta = await fetch('/api/questionario/respostas', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ respostas: respostasParaEnviar })
+                });
+                const dados = await resposta.json();
+                if (resposta.status === 401) {
+                    window.location.replace('../login_cadastro/login_cad.html');
+                    return;
+                }
+                if (!resposta.ok) {
+                    throw new Error(dados.mensagem || 'Não foi possível salvar suas respostas.');
+                }
+                window.location.href = 'relatorio.html';
+            } catch (erroSalvar) {
+                console.error('Não foi possível salvar as respostas.', erroSalvar);
+                erro.textContent = erroSalvar.message || 'Não foi possível salvar suas respostas. Tente novamente.';
+                opcoes.forEach((opcao) => { opcao.disabled = false; });
             }
-            window.location.href = 'relatorio.html';
         }
 
         mostrarPergunta();
