@@ -104,6 +104,8 @@ header {
     font-weight: bold;
     text-decoration: none;
     width: 20svh;
+    position: relative;
+    z-index: 10;
 
     transition: 0.3s ease;
 }
@@ -202,8 +204,8 @@ header {
     border: .1svh solid #D7A65D;
     border-radius: 5%;
     overflow: auto;
-    width: 36svh;
-    height: 40svh;
+    width: 40svh;
+    height: 45svh;
     background-color: #8F2029;
 }
 
@@ -220,6 +222,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center; 
-    padding: 1rem;  
+    text-align: center;
+    padding: 1rem;
 }

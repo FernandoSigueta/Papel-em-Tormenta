@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login e Cadastro</title>
     <link rel="icone_logo" type="image/png" href="../assets/icone_logo.png">
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="login_cad.css">
 </head>
 
 <body>
@@ -28,9 +28,7 @@
 
         <nav class="navegacao_header">
             <a href="../home/index.html" class="active">Início</a>
-            <a href="../sobre/sobre.html">Sobre</a>
-            <a href="../dash/resultado.html">Resultados</a>
-            <a href="login.html" class="botao_login">Login</a>
+            <a href="login_cad.html" class="botao_login">Login/Cadastro</a>
         </nav>
     </header>
 
@@ -40,12 +38,12 @@
 
     <section class="background_login">
         <section class="card">
-            <div class="card__head" id="card-head">
+            <div class="card_head" id="card-head">
                 <button class="tab ativa" id="tab-entrar" type="button" onclick="mostrar('entrar')">Entrar</button>
                 <button class="tab" id="tab-cadastro" type="button" onclick="mostrar('cadastro')">Criar conta</button>
             </div>
 
-            <div class="card__body">
+            <div class="card_body">
                 <!-- Entrar -->
                 <div id="panel-entrar">
                     <h2>Bem-vindo de volta</h2>
@@ -81,7 +79,7 @@
                             <label for="cad-nome">Nome de aventureiro</label>
                             <div class="control">
                                 <input id="cad-nome" name="nome" type="text" autocomplete="nickname"
-                                    placeholder="Ex.: Arton, o Errante" oninput="limpar('cad-nome')">
+                                    placeholder="Ex.: Trov, o Curioso" oninput="limpar('cad-nome')">
                             </div>
                             <p class="error" id="cad-nome-err"></p>
                         </div>
@@ -89,7 +87,7 @@
                             <label for="cad-email">E-mail</label>
                             <div class="control">
                                 <input id="cad-email" name="email" type="email" autocomplete="email"
-                                    placeholder="aventureiro@taverna.com" oninput="limpar('cad-email')">
+                                    placeholder="rpg@email.com" oninput="limpar('cad-email')">
                             </div>
                             <p class="error" id="cad-email-err"></p>
                         </div>
@@ -119,12 +117,7 @@
 
                 <!-- Sucesso -->
                 <div id="panel-ok" class="welcome oculto">
-                    <svg class="sigil" viewBox="0 0 64 64" aria-hidden="true">
-                        <polygon points="32,2 38,22 58,32 38,42 32,62 26,42 6,32 26,22" fill="#2b1f1a" stroke="#b8892f"
-                            stroke-width="2" stroke-linejoin="round" />
-                        <path d="M14 32 Q32 17 50 32 Q32 47 14 32 Z" fill="#161111" stroke="#e8c27a" stroke-width="2" />
-                        <circle cx="32" cy="32" r="7.5" fill="#8f1f2a" stroke="#e8c27a" stroke-width="1.5" />
-                    </svg>
+                    <img src="../assets/icone_logo.png" style="height: 10svh; width: 10svh;" class="sigil">
                     <h2 id="ok-title"></h2>
                     <p id="ok-text"></p>
                     <a class="btn" href="#">Começar o quiz</a>
@@ -162,8 +155,8 @@
     // Botão Mostrar / Ocultar senha
     // ------------------------------------------------------------
     function mostrarSenha(idCampo, idBotao) {
-        var campo = document.getElementById(idCampo);
-        var botao = document.getElementById(idBotao);
+        let campo = document.getElementById(idCampo);
+        let botao = document.getElementById(idBotao);
 
         if (campo.type === "password") {
             campo.type = "text";
@@ -179,8 +172,8 @@
     // Devolve true se não há erro e false se há.
     // ------------------------------------------------------------
     function erro(idCampo, mensagem) {
-        var campo = document.getElementById(idCampo);
-        var texto = document.getElementById(idCampo + "-err");
+        let campo = document.getElementById(idCampo);
+        let texto = document.getElementById(idCampo + "-err");
 
         texto.textContent = mensagem;
 
@@ -197,11 +190,6 @@
     function limpar(idCampo) {
         erro(idCampo, "");
         document.getElementById("login-geral").textContent = "";
-    }
-
-    // Confere se o e-mail tem "@" e um "." e não tem espaços
-    function emailValido(email) {
-        return email.includes("@") && email.includes(".") && !email.includes(" ");
     }
 
     // ------------------------------------------------------------
@@ -221,10 +209,10 @@
     // Enviar o formulário de login
     // ------------------------------------------------------------
     function entrar() {
-        var email = document.getElementById("login-email").value.trim();
-        var senha = document.getElementById("login-senha").value;
-        var mensagemEmail = "";
-        var mensagemSenha = "";
+        let email = document.getElementById("login-email").value.trim();
+        let senha = document.getElementById("login-senha").value;
+        let mensagemEmail = "";
+        let mensagemSenha = "";
 
         if (email === "") {
             mensagemEmail = "Digite seu e-mail.";
@@ -236,8 +224,8 @@
             mensagemSenha = "Digite sua senha.";
         }
 
-        var emailOk = erro("login-email", mensagemEmail);
-        var senhaOk = erro("login-senha", mensagemSenha);
+        let emailOk = erro("login-email", mensagemEmail);
+        let senhaOk = erro("login-senha", mensagemSenha);
 
         if (emailOk && senhaOk) {
             sucesso(email.split("@")[0], "Sua ficha está pronta. Retome o quiz ou veja seus resultados.");
@@ -252,14 +240,14 @@
     // Enviar o formulário de cadastro
     // ------------------------------------------------------------
     function cadastrar() {
-        var nome = document.getElementById("cad-nome").value.trim();
-        var email = document.getElementById("cad-email").value.trim();
-        var senha = document.getElementById("cad-senha").value;
-        var confirma = document.getElementById("cad-confirma").value;
-        var mensagemNome = "";
-        var mensagemEmail = "";
-        var mensagemSenha = "";
-        var mensagemConfirma = "";
+        let nome = document.getElementById("cad-nome").value.trim();
+        let email = document.getElementById("cad-email").value.trim();
+        let senha = document.getElementById("cad-senha").value;
+        let confirma = document.getElementById("cad-confirma").value;
+        let mensagemNome = "";
+        let mensagemEmail = "";
+        let mensagemSenha = "";
+        let mensagemConfirma = "";
 
         if (nome.length < 3) {
             mensagemNome = "Use pelo menos 3 caracteres.";
@@ -267,8 +255,6 @@
 
         if (email === "") {
             mensagemEmail = "Digite seu e-mail.";
-        } else if (!emailValido(email)) {
-            mensagemEmail = "Esse e-mail não parece válido.";
         }
 
         if (senha.length < 8) {
@@ -279,10 +265,10 @@
             mensagemConfirma = "As senhas não são iguais.";
         }
 
-        var nomeOk = erro("cad-nome", mensagemNome);
-        var emailOk = erro("cad-email", mensagemEmail);
-        var senhaOk = erro("cad-senha", mensagemSenha);
-        var confirmaOk = erro("cad-confirma", mensagemConfirma);
+        let nomeOk = erro("cad-nome", mensagemNome);
+        let emailOk = erro("cad-email", mensagemEmail);
+        let senhaOk = erro("cad-senha", mensagemSenha);
+        let confirmaOk = erro("cad-confirma", mensagemConfirma);
 
         if (nomeOk && emailOk && senhaOk && confirmaOk) {
             sucesso(nome, "Sua conta foi criada. Faça o quiz para descobrir seu arquétipo de jogador.");
