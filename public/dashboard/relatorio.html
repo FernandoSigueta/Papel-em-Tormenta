@@ -95,8 +95,20 @@
 
                 <div class="card_grafico">
                     <h3>Detalhe por Eixo</h3>
-                    <div class="wrapper_canvas_barras">
-                        <canvas id="graficoEixos"></canvas>
+
+                    <!-- Gráfico 1: Os 8 Eixos Principais -->
+                    <div class="wrapper_canvas_eixos_principais">
+                        <canvas id="graficoEixosPrincipais"></canvas>
+                    </div>
+
+                    <!-- Divisor e Subtítulo dos Traços Complementares -->
+                    <div class="divisor_eixos">
+                        <span>Traços complementares, que não aparecem no radar</span>
+                    </div>
+
+                    <!-- Gráfico 2: Os 2 Traços Complementares -->
+                    <div class="wrapper_canvas_eixos_complementares">
+                        <canvas id="graficoEixosComplementares"></canvas>
                     </div>
                 </div>
             </div>
@@ -182,6 +194,108 @@
                 }
             }
         });
+
+        const pluginLabelsAcimaDaBarra = {
+            id: 'labelsAcimaDaBarra',
+            afterDatasetsDraw(chart) {
+                const { ctx, chartArea: { left, right } } = chart;
+                const meta = chart.getDatasetMeta(0);
+                const labels = chart.data.labels;
+                const valores = chart.data.datasets[0].data;
+
+                ctx.save();
+                ctx.font = '12px Georgia, serif';
+
+                meta.data.forEach((barra, index) => {
+                    const yTexto = barra.y - 9; // Posiciona o texto logo acima da barra
+
+                    // Nome do eixo à esquerda
+                    ctx.fillStyle = '#F0D8AE';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(labels[index], left, yTexto);
+
+                    // Nota formatada com vírgula à direita
+                    ctx.fillStyle = '#C9A979';
+                    ctx.textAlign = 'right';
+                    const valorFormatado = valores[index].toFixed(2).replace('.', ',');
+                    ctx.fillText(valorFormatado, right, yTexto);
+                });
+
+                ctx.restore();
+            }
+        };
+
+        // Função auxiliar para gerar a configuração padrão das barras horizontais
+        function criarConfiguracaoBarras(labels, dados, corBarra) {
+            return {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dados,
+                        backgroundColor: corBarra,
+                        borderRadius: 4,
+                        borderSkipped: false,
+                        barThickness: 6 // Espessura fina da barra
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Transforma em barras horizontais
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 14, // Espaço para o texto da primeira barra não cortar
+                            right: 2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#211A19',
+                            titleColor: '#D7A65D',
+                            bodyColor: '#F0D8AE',
+                            borderColor: '#D7A65D',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (context) => ` Nota: ${context.raw.toFixed(2).replace('.', ',')}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            min: 0,
+                            max: 5,
+                            display: false // Oculta os números do eixo X inferior
+                        },
+                        y: {
+                            display: false // Oculta os labels laterais padrão (pois desenhamos acima)
+                        }
+                    }
+                },
+                plugins: [pluginLabelsAcimaDaBarra]
+            };
+        }
+
+        const ctxEixosPrincipais = document.getElementById('graficoEixosPrincipais').getContext('2d');
+        const graficoEixosPrincipais = new Chart(
+            ctxEixosPrincipais,
+            criarConfiguracaoBarras(
+                ['Mecânica', 'Estratégia', 'Combate', 'Exploração', 'Narrativa', 'Interpretação', 'Social', 'Colaboração'],
+                [4.60, 4.20, 3.80, 3.40, 3.10, 3.00, 2.50, 2.20],
+                '#E8C27A'
+            )
+        );
+
+        const ctxEixosComplementares = document.getElementById('graficoEixosComplementares').getContext('2d');
+        const graficoEixosComplementares = new Chart(
+            ctxEixosComplementares,
+            criarConfiguracaoBarras(
+                ['Improviso', 'Competitividade'],
+                [2.90, 3.70],
+                '#E06C84'
+            )
+        );
     </script>
 </body>
 
