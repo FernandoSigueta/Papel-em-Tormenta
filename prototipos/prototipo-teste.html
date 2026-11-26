@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Que tipo de jogador de RPG é você? (protótipo)</title>
+<style>
+  body { font-family: Georgia, serif; background: #f3e9d2; color: #2b2118; max-width: 640px; margin: 0 auto; padding: 24px; }
+  h1 { color: #7a1f2b; }
+  button { font: inherit; padding: 10px 16px; margin: 4px; border: 2px solid #7a1f2b; background: #fff8e6; color: #2b2118; border-radius: 6px; cursor: pointer; }
+  button:hover { background: #7a1f2b; color: #fff8e6; }
+  button.marcado { background: #b8893b; }
+  .escala { display: flex; justify-content: space-between; }
+  .rotulos { display: flex; justify-content: space-between; font-size: 0.85em; color: #6b5a48; }
+  #barra { height: 8px; background: #d9c9a3; border-radius: 4px; margin-bottom: 16px; }
+  #progresso { height: 100%; width: 0; background: #b8893b; border-radius: 4px; }
+  .oculto { display: none; }
+  td { padding: 2px 12px 2px 0; }
+</style>
+</head>
+<body>
+<h1>Que tipo de jogador de RPG é você?</h1>
+
+<section id="tela-pergunta">
+  <div id="barra"><div id="progresso"></div></div>
+  <p id="contador"></p>
+  <h2 id="texto-pergunta"></h2>
+  <div class="escala" id="opcoes"></div>
+  <div class="rotulos"><span>Discordo totalmente</span><span>Concordo totalmente</span></div>
+  <p>
+    <button id="voltar">Voltar</button>
+    <button id="aleatorio">[dev] Respostas aleatórias</button>
+  </p>
+</section>
+
+<section id="tela-resultado" class="oculto">
+  <h2 id="nome-arquetipo"></h2>
+  <p id="alinhamento"></p>
+  <div id="radar"></div>
+  <table id="tabela-niveis"></table>
+  <p><button id="refazer">Refazer teste</button></p>
+</section>
+
+<script>
+// ================= 1. DADOS (é aqui que você edita o conteúdo) =================
+// Ordem do radar: 3 eixos mecânicos juntos, depois 3 interpretativos.
+const EIXOS = [
+  { id: "mecanica",      nome: "Mecânica",      nucleo: "Otimizador",   modificador: "Mecânico" },
+  { id: "combate",       nome: "Combate",       nucleo: "Guerreiro",    modificador: "Combativo" },
+  { id: "estrategia",    nome: "Estratégia",    nucleo: "Estrategista", modificador: "Estratégico" },
+  { id: "interpretacao", nome: "Interpretação", nucleo: "Ator",         modificador: "Dramático" },
+  { id: "narrativa",     nome: "Narrativa",     nucleo: "Cronista",     modificador: "Narrativo" },
+  { id: "social",        nome: "Social",        nucleo: "Anfitrião",    modificador: "Sociável" }
+];
+
+// EXEMPLOS: 2 por eixo. Na versão final são 5 por eixo + 4 por eixo de alinhamento.
+// "invertida: true" = concordar significa MENOS desse eixo (nota vira 6 - resposta).
+// Eixos "caos" e "mal" ficam fora do radar: quanto maior a nota, mais Caos / mais Mal.
+const PERGUNTAS = [
+  { eixo: "mecanica",      invertida: false, texto: "Gosto de montar a ficha do meu personagem para que ele seja o mais eficiente possível." },
+  { eixo: "mecanica",      invertida: false, texto: "Ler as regras e descobrir combinações poderosas faz parte da diversão." },
+  { eixo: "combate",       invertida: false, texto: "Um bom combate é o ponto alto de uma sessão." },
+  { eixo: "combate",       invertida: true,  texto: "Posso passar a sessão inteira sem lutar e me divertir do mesmo jeito." },
+  { eixo: "estrategia",    invertida: false, texto: "Gosto de montar um plano antes de agir." },
+  { eixo: "estrategia",    invertida: false, texto: "Resolver enigmas e armadilhas me atrai mais do que lutar." },
+  { eixo: "interpretacao", invertida: false, texto: "Gosto de falar com a voz e os trejeitos do meu personagem." },
+  { eixo: "interpretacao", invertida: true,  texto: "Prefiro dizer o que eu, jogador, quero fazer a descrever o que o personagem sente." },
+  { eixo: "narrativa",     invertida: false, texto: "Quero que a história do meu personagem influencie a trama da campanha." },
+  { eixo: "narrativa",     invertida: false, texto: "Uma sessão memorável é a que parece um capítulo de uma boa história." },
+  { eixo: "social",        invertida: false, texto: "O melhor da sessão é estar com os amigos, mais do que o jogo em si." },
+  { eixo: "social",        invertida: false, texto: "Fico atento para que todos na mesa tenham espaço para brilhar." },
+  { eixo: "caos",          invertida: false, texto: "Prefiro agir primeiro e ver o que acontece." },
+  { eixo: "caos",          invertida: true,  texto: "Gosto de seguir o plano combinado pelo grupo." },
+  { eixo: "mal",           invertida: false, texto: "Gosto de personagens que fazem o que for preciso, mesmo que machuque os outros." },
+  { eixo: "mal",           invertida: true,  texto: "Gosto de interpretar um herói que protege os inocentes." }
+];
+
+// Grade de alinhamento: linha = Ordem/Neutro/Caos, coluna = Bem/Neutro/Mal
+const GRADE = [
+  ["Leal e Bom",     "Leal e Neutro",     "Leal e Mau"],
+  ["Neutro e Bom",   "Neutro Verdadeiro", "Neutro e Mau"],
+  ["Caótico e Bom",  "Caótico e Neutro",  "Caótico e Mau"]
+];
+
+// ================= 2. ESTADO =================
+let perguntas = [];   // cópia embaralhada
+let respostas = [];   // 1 a 5, na mesma ordem de "perguntas"
+let atual = 0;
+
+function embaralhar(lista) {
+  for (let i = lista.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [lista[i], lista[j]] = [lista[j], lista[i]];
+  }
+  return lista;
+}
+
+// ================= 3. PONTUAÇÃO =================
+function calcularMedias() {
+  const soma = {}, qtd = {};
+  perguntas.forEach((p, i) => {
+    const valor = p.invertida ? 6 - respostas[i] : respostas[i];
+    soma[p.eixo] = (soma[p.eixo] || 0) + valor;
+    qtd[p.eixo] = (qtd[p.eixo] || 0) + 1;
+  });
+  const medias = {};
+  for (const id in soma) medias[id] = soma[id] / qtd[id];
+  return medias;
+}
+
+function nivel(media) { return Math.min(5, Math.max(1, Math.round(media))); }
+
+// Nome composto: núcleo do eixo mais alto + modificador do segundo
+function gerarNome(medias) {
+  const ordem = EIXOS.slice().sort((a, b) => medias[b.id] - medias[a.id]); // empate: segue a ordem de EIXOS
+  const maior = nivel(medias[ordem[0].id]);
+  const segundo = nivel(medias[ordem[1].id]);
+  const menor = nivel(medias[ordem[ordem.length - 1].id]);
+  if (maior <= 2) return "Jogador Casual";
+  if (maior - menor <= 1) return "Equilibrado";
+  if (segundo <= 2) return ordem[0].nucleo + " Puro";
+  return ordem[0].nucleo + " " + ordem[1].modificador;
+}
+
+function faixa(media) { return media < 2.5 ? 0 : (media <= 3.5 ? 1 : 2); }
+function gerarAlinhamento(medias) { return GRADE[faixa(medias.caos)][faixa(medias.mal)]; }
+
+// ================= 4. RADAR (SVG puro, sem biblioteca) =================
+function desenharRadar(niveis) {
+  const T = 340, c = T / 2, R = 115, n = EIXOS.length;
+  const ponto = (i, r) => {
+    const ang = -Math.PI / 2 + i * 2 * Math.PI / n;
+    return [c + r * Math.cos(ang), c + r * Math.sin(ang)];
+  };
+  let svg = `<svg viewBox="0 0 ${T} ${T}" width="100%" role="img" aria-label="Gráfico de radar do perfil">`;
+  for (let anel = 1; anel <= 5; anel++) {
+    const pts = EIXOS.map((_, i) => ponto(i, R * anel / 5).join(",")).join(" ");
+    svg += `<polygon points="${pts}" fill="none" stroke="#b8a77f"/>`;
+  }
+  EIXOS.forEach((e, i) => {
+    const [x, y] = ponto(i, R), [lx, ly] = ponto(i, R + 25);
+    svg += `<line x1="${c}" y1="${c}" x2="${x}" y2="${y}" stroke="#b8a77f"/>`;
+    svg += `<text x="${lx}" y="${ly}" font-size="12" text-anchor="middle" dominant-baseline="middle" fill="#2b2118">${e.nome}</text>`;
+  });
+  const dados = EIXOS.map((e, i) => ponto(i, R * niveis[e.id] / 5).join(",")).join(" ");
+  svg += `<polygon points="${dados}" fill="rgba(122,31,43,0.35)" stroke="#7a1f2b" stroke-width="2"/>`;
+  svg += `</svg>`;
+  document.getElementById("radar").innerHTML = svg;
+}
+
+// ================= 5. TELAS =================
+function mostrarPergunta() {
+  document.getElementById("contador").textContent = `Pergunta ${atual + 1} de ${perguntas.length}`;
+  document.getElementById("progresso").style.width = (atual / perguntas.length * 100) + "%";
+  document.getElementById("texto-pergunta").textContent = perguntas[atual].texto;
+  const div = document.getElementById("opcoes");
+  div.innerHTML = "";
+  for (let v = 1; v <= 5; v++) {
+    const b = document.createElement("button");
+    b.textContent = v;
+    if (respostas[atual] === v) b.className = "marcado";
+    b.onclick = () => responder(v);
+    div.appendChild(b);
+  }
+}
+
+function responder(valor) {
+  respostas[atual] = valor;
+  if (atual < perguntas.length - 1) { atual++; mostrarPergunta(); }
+  else mostrarResultado();
+}
+
+function mostrarResultado() {
+  const medias = calcularMedias();
+  const niveis = {};
+  EIXOS.forEach(e => { niveis[e.id] = nivel(medias[e.id]); });
+  document.getElementById("tela-pergunta").classList.add("oculto");
+  document.getElementById("tela-resultado").classList.remove("oculto");
+  document.getElementById("nome-arquetipo").textContent = gerarNome(medias);
+  document.getElementById("alinhamento").textContent = "Alinhamento: " + gerarAlinhamento(medias);
+  desenharRadar(niveis);
+  document.getElementById("tabela-niveis").innerHTML =
+    EIXOS.map(e => `<tr><td>${e.nome}</td><td>${niveis[e.id]} / 5</td></tr>`).join("");
+}
+
+function iniciar() {
+  perguntas = embaralhar(PERGUNTAS.slice());
+  respostas = new Array(perguntas.length).fill(null);
+  atual = 0;
+  document.getElementById("tela-resultado").classList.add("oculto");
+  document.getElementById("tela-pergunta").classList.remove("oculto");
+  mostrarPergunta();
+}
+
+document.getElementById("voltar").onclick = () => { if (atual > 0) { atual--; mostrarPergunta(); } };
+document.getElementById("refazer").onclick = iniciar;
+document.getElementById("aleatorio").onclick = () => {
+  respostas = respostas.map(() => 1 + Math.floor(Math.random() * 5));
+  mostrarResultado();
+};
+
+iniciar();
+</script>
+</body>
+</html>
